@@ -1,11 +1,8 @@
 module CosmicWimpout
 
   class Game
-    attr_reader :current_player
-
     def initialize(*player_names)
-      players = player_names.map { |name| Player.new(name) }
-      @players = players.cycle
+      @players = player_names.map { |name| Player.new(name) }
 
       @cubes = [Cube.new(:two, :three, :four, 5, :six, 10)] * 4
       @cubes.push Cube.new(:two, :sun, :four, 5, :six, 10)
@@ -13,16 +10,36 @@ module CosmicWimpout
       start_next_turn
     end
 
+    def current_player
+      @players.first
+    end
+
     # TODO this might go away, once the game is smart enough to end a turn on its own.
     def end_turn
-      @current_player.bank_points @turn_points
+      current_player.bank_points @turn_points
+      @players.rotate!
       start_next_turn
+    end
+
+    def toss_cubes
+      @cubes.each { |c| c.toss }
+      @turn_points = @cubes.inject(0) do |sum, cube|
+        sum + if [5, 10].include? cube.face_up
+                cube.face_up
+              else
+                0
+              end
+      end
+    end
+
+    # Just a helper, for development
+    def to_s
+      @players * "\n"
     end
 
     private
     def start_next_turn
       @turn_points = 0
-      @current_player = @players.next
     end
   end
 
@@ -43,8 +60,14 @@ module CosmicWimpout
   end
 
   class Cube
+    attr_reader :face_up
+
     def initialize(*sides)
       @sides = sides
+    end
+
+    def toss
+      @face_up = @sides.sample
     end
   end
 
