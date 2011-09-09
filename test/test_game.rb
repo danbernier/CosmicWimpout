@@ -1,6 +1,8 @@
 require 'minitest/autorun'
 require 'cosmic_wimpout'
 
+# minitest info: http://bfts.rubyforge.org/minitest/
+
 describe CosmicWimpout::Game do
 
   before do
