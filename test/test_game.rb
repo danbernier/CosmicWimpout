@@ -12,13 +12,13 @@ describe CosmicWimpout::Game do
   describe "when played by several people" do
     it "should cycle through the players" do
       @game.current_player.name.must_equal "Right"
-      @game.end_turn
+      @game.toss_cubes
       @game.current_player.name.must_equal "Said"
-      @game.end_turn
+      @game.toss_cubes
       @game.current_player.name.must_equal "Fred"
-      @game.end_turn
+      @game.toss_cubes
       @game.current_player.name.must_equal "Right"
-      @game.end_turn
+      @game.toss_cubes
       @game.current_player.name.must_equal "Said"
     end
   end
@@ -26,13 +26,11 @@ describe CosmicWimpout::Game do
   describe "when the turn ends" do
     it "should add the turn points to the current player's total" do
       fox_the_dice(5, 10, :two, :two, :three)
-      turn_points = @game.toss_cubes
-      turn_points.must_equal 15
-
-      @game.end_turn # Bank points for our player
+      @game.toss_cubes
 
       # Cycle through the other players (sheesh)
-      @game.end_turn; @game.end_turn
+      fox_the_dice(0, 0, 0, 0, 0)
+      @game.toss_cubes; @game.toss_cubes
 
       @game.current_player.points.must_equal 15
     end

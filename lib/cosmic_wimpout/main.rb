@@ -14,13 +14,6 @@ module CosmicWimpout
       @players.first
     end
 
-    # TODO this might go away, once the game is smart enough to end a turn on its own.
-    def end_turn
-      current_player.bank_points @turn_points
-      @players.rotate!
-      start_next_turn
-    end
-
     def toss_cubes
       @cubes.each { |c| c.toss }
       @turn_points = @cubes.inject(0) do |sum, cube|
@@ -30,6 +23,10 @@ module CosmicWimpout
                 0
               end
       end
+
+      current_player.bank_points @turn_points
+      @players.rotate!
+      start_next_turn
     end
 
     # Just a helper, for development
