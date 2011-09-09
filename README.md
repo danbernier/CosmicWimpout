@@ -36,6 +36,8 @@ I have something playable all along the way.
    you're out of dice, your turn ends. Bank any points you earned.
 3. "You may not want to, but you must." If you've scored on all 5 
    dice, throw all 5 dice again, and keep gathering points.
+4. End-game scenario: once one Player gets 500 points (or 300 -
+   parameterize), end the game. (Add the "Last Licks" rule later.)
 
 That's far enough for right now. We'll get to THE FLASH soon enough.
     
