@@ -32,12 +32,16 @@ I have something playable all along the way.
 1. _Start throwing dice. Each turn, the player throws all 5 dice, and
    gets points for any numbered dice. End of turn, bank your points._
    **DONE**
-2. Let the player re-throw any dice that came up symbols. If you ever
-   throw _all_ symbols, your turn ends (a "cosmic wimpout!"). Once
-   you're out of dice, your turn ends. Bank any points you earned.
-3. "You may not want to, but you must." If you've scored on all 5
+2. If you toss the dice, and some come up symbols, you can choose to
+   re-throw them for more points, or bank this turn's points. If you
+   ever throw _all_ symbols, your turn ends, and you lose this turn's
+   points (a "cosmic wimpout!"). Once you're out of dice, your turn
+   ends - bank any points you earned.
+3. Don't let Players with zero banked points end their turn until they
+   have 35 or more points for the turn.
+4. "You may not want to, but you must." If you've scored on all 5
    dice, throw all 5 dice again, and keep gathering points.
-4. End-game scenario: once one Player gets 500 points (or 300 -
+5. End-game scenario: once one Player gets 500 points (or 300 -
    parameterize), end the game. (Add the "Last Licks" rule later.)
 
 That's far enough for right now. We'll get to THE FLASH soon enough.
