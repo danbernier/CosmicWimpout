@@ -27,13 +27,13 @@ you'll pick up the rest as we go along.
 I'll try to build the game in steps, so as to not go crazy, and so
 I have something playable all along the way.
 
-0. __Create a game, with named players, who have points. Cycle through
-   their turns, and collect points from each turn.__ **DONE**
-1. __Start throwing dice. Each turn, the player throws all 5 dice, and
-   gets points for any numbered dice. End of turn, bank your points.__
+0. _Create a game, with named players, who have points. Cycle through
+   their turns, and collect points from each turn._ **DONE**
+1. _Start throwing dice. Each turn, the player throws all 5 dice, and
+   gets points for any numbered dice. End of turn, bank your points._
    **DONE**
 2. Let the player re-throw any dice that came up symbols. If you ever
-   throw __all__ symbols, your turn ends (a "cosmic wimpout!"). Once
+   throw _all_ symbols, your turn ends (a "cosmic wimpout!"). Once
    you're out of dice, your turn ends. Bank any points you earned.
 3. "You may not want to, but you must." If you've scored on all 5
    dice, throw all 5 dice again, and keep gathering points.
