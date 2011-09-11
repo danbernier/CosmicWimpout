@@ -28,6 +28,8 @@ describe CosmicWimpout::Game do
   describe "when numbers and symbols are rolled" do
     it "should let the player decide: re-roll the symbol cubes?" do
       fox_the_dice(5, 10, [:two, 5], [:two, 10], [:three, :four, 10])
+      
+      
     end
   end
 

@@ -1,7 +1,7 @@
 module CosmicWimpout
 
   class Game
-    def initialize players
+    def initialize *players
       @players = players
 
       @cubes = Array.new(4) { Cube.new(:two, :three, :four, 5, :six, 10) }

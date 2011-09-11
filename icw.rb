@@ -19,7 +19,7 @@ class IrbGame < CosmicWimpout::Game
   end
 
   def initialize *player_names
-    super player_names.map { |name| IrbPlayer.new(name) }
+    super *player_names.map { |name| IrbPlayer.new(name) }
   end
 
   def toss cubes
