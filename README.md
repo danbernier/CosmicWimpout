@@ -34,7 +34,7 @@ I have something playable all along the way.
    **DONE**
 2. _If you toss the dice, and some come up symbols, you can choose to
    re-throw them for more points, or bank this turn's points. If you
-   ever throw _all_ symbols, your turn ends, and you lose this turn's
+   ever throw **all** symbols, your turn ends, and you lose this turn's
    points (a "cosmic wimpout!"). Once you're out of dice, your turn
    ends - bank any points you earned._ **DONE**
 3. Don't let Players with zero banked points end their turn until they
