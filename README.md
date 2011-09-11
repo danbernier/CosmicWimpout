@@ -37,8 +37,8 @@ I have something playable all along the way.
    ever throw **all** symbols, your turn ends, and you lose this turn's
    points (a "cosmic wimpout!"). Once you're out of dice, your turn
    ends - bank any points you earned._ **DONE**
-3. Don't let Players with zero banked points end their turn until they
-   have 35 or more points for the turn.
+3. _Don't let Players with zero banked points end their turn until they
+   have 35 or more points for the turn._ **DONE**
 4. "You may not want to, but you must." If you've scored on all 5
    dice, throw all 5 dice again, and keep gathering points.
 5. End-game scenario: once one Player gets 500 points (or 300 -
