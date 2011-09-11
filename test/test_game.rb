@@ -27,9 +27,12 @@ describe CosmicWimpout::Game do
 
   describe "when numbers and symbols are rolled" do
     it "should let the player decide: re-roll the symbol cubes?" do
-      fox_the_dice(5, 5, [:two, 10], [:two, 10], [:three, :four])
+      fox_the_dice(5, 10, [:two, 10], [:two, 10], [:three, :four])
 
-      # Tortoise will get 10 pts first toss, and re-roll.
+      @tortoise.points = 100
+      @achilles.points = 100
+
+      # Tortoise will get 15 pts first toss, and re-roll.
       # He'll get 20 more second toss, and stop.
       @tortoise.rerolls_if do |cubes, turn_points|
         cubes.size > 1
@@ -37,9 +40,9 @@ describe CosmicWimpout::Game do
 
       @game.take_turn
 
-      @tortoise.points.must_equal 30
-      @tortoise.roll_decisions[0].must_equal [[:two, :two, :three], 10]
-      @tortoise.roll_decisions[1].must_equal [[:four], 30]
+      @tortoise.points.must_equal 135
+      @tortoise.roll_decisions[0].must_equal [[:two, :two, :three], 15]
+      @tortoise.roll_decisions[1].must_equal [[:four], 35]
 
       # Achilles ALWAYS re-rolls. Eventually, he'll lose his points.
       @achilles.rerolls_if do |cubes, turn_points|
@@ -48,9 +51,24 @@ describe CosmicWimpout::Game do
 
       @game.take_turn
 
-      @achilles.points.must_equal 0
-      @achilles.roll_decisions[0].must_equal [[:two, :two, :three], 10]
-      @achilles.roll_decisions[1].must_equal [[:four], 30]
+      @achilles.points.must_equal 100
+      @achilles.roll_decisions[0].must_equal [[:two, :two, :three], 15]
+      @achilles.roll_decisions[1].must_equal [[:four], 35]
+    end
+  end
+
+  describe "when players have no points banked" do
+    it "won't let them stop until they have 35 points" do
+      fox_the_dice(5, :two, :four, :four, :six)
+
+      @game.take_turn
+
+      # Tortoise has no points banked, so he never has a chance to quit
+      # after rolling the first 5.
+      @tortoise.roll_decisions.size.must_equal 0
+
+      # And his turn ended, so he still has no points.
+      @tortoise.points.must_equal 0
     end
   end
 
@@ -100,7 +118,7 @@ describe CosmicWimpout::Game do
   end
 
   class MockPlayer < CosmicWimpout::Player
-    attr_accessor :roll_decisions
+    attr_accessor :roll_decisions, :points
 
     def initialize name
       super name

@@ -25,7 +25,13 @@ module CosmicWimpout
         if numbers.empty? # Cosmic Wimpout! End of turn.
           @players.rotate!
           return
-        elsif symbols.empty? || !current_player.roll_again?(symbols, turn_points)
+
+        elsif symbols.empty?
+          current_player.bank_points turn_points
+          @players.rotate!
+          return
+
+        elsif player_quits(current_player, symbols, turn_points)
           current_player.bank_points turn_points
           @players.rotate!
           return
@@ -33,6 +39,16 @@ module CosmicWimpout
 
         unscored_cubes = symbols
         # Now re-roll!
+      end
+    end
+
+    def player_quits(player, cubes_to_toss, turn_points)
+      if player.points > 0
+        # If player has points banked, he can choose to stop.
+        !current_player.roll_again?(cubes_to_toss, turn_points)
+      else
+        # Else, he needs at least 35 points this turn to quit.
+        turn_points >= 35
       end
     end
 
