@@ -17,9 +17,9 @@ describe CosmicWimpout::Game do
 
       @game.current_player.name.must_equal "Tortoise"
       2.times do
-        @game.toss_cubes
+        @game.take_turn
         @game.current_player.name.must_equal "Achilles"
-        @game.toss_cubes
+        @game.take_turn
         @game.current_player.name.must_equal "Tortoise"
       end
     end
@@ -34,7 +34,7 @@ describe CosmicWimpout::Game do
   describe "when the turn ends" do
     it "should add the turn points to the current player's total" do
       fox_the_dice(5, 5, 5, 10, 10)
-      @game.toss_cubes
+      @game.take_turn
       @tortoise.points.must_equal 35
     end
   end
