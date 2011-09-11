@@ -6,33 +6,39 @@ require 'cosmic_wimpout'
 describe CosmicWimpout::Game do
 
   before do
-    @game = CosmicWimpout::Game.new "Right", "Said", "Fred"
+    @game = CosmicWimpout::Game.new "Tortoise", "Achilles"
   end
 
   describe "when played by several people" do
     it "should cycle through the players" do
-      @game.current_player.name.must_equal "Right"
-      @game.toss_cubes
-      @game.current_player.name.must_equal "Said"
-      @game.toss_cubes
-      @game.current_player.name.must_equal "Fred"
-      @game.toss_cubes
-      @game.current_player.name.must_equal "Right"
-      @game.toss_cubes
-      @game.current_player.name.must_equal "Said"
+      fox_the_dice :two, :two, :three, :three, :four
+
+      @game.current_player.name.must_equal "Tortoise"
+      2.times do
+        @game.toss_cubes
+        @game.current_player.name.must_equal "Achilles"
+        @game.toss_cubes
+        @game.current_player.name.must_equal "Tortoise"
+      end
+    end
+  end
+
+  describe "when numbers and symbols are rolled" do
+    it "should let the player decide: re-roll the symbol cubes?" do
+      fox_the_dice(5, 10, [:two, 5], [:two, 10], [:three, :four, 10])
     end
   end
 
   describe "when the turn ends" do
     it "should add the turn points to the current player's total" do
-      fox_the_dice(5, 10, :two, :two, :three)
+      fox_the_dice(5, 5, 5, 10, 10)
       @game.toss_cubes
 
       # Cycle through the other players (sheesh)
-      fox_the_dice(0, 0, 0, 0, 0)
+      fox_the_dice(:two, :two, :three, :three, :four)
       @game.toss_cubes; @game.toss_cubes
 
-      @game.current_player.points.must_equal 15
+      @game.current_player.points.must_equal 35
     end
   end
 
@@ -41,13 +47,14 @@ describe CosmicWimpout::Game do
     cubes = @game.instance_variable_set :@cubes, fixed_cubes
   end
 
-end
+  class FixedCube < CosmicWimpout::Cube
+    def initialize(values)
+      values = [values] unless Array === values
+      @fixed_rolls = values.cycle
+    end
+    def toss
+      @face_up = @fixed_rolls.next
+    end
+  end
 
-class FixedCube
-  attr_reader :face_up
-  def initialize(value)
-    @face_up = value
-  end
-  def toss
-  end
 end
