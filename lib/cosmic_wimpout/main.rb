@@ -1,8 +1,8 @@
 module CosmicWimpout
 
   class Game
-    def initialize(*player_names)
-      @players = player_names.map { |name| Player.new(name) }
+    def initialize(*players)
+      @players = players
 
       @cubes = [Cube.new(:two, :three, :four, 5, :six, 10)] * 4
       @cubes.push Cube.new(:two, :sun, :four, 5, :six, 10)
@@ -13,19 +13,26 @@ module CosmicWimpout
     end
 
     def toss_cubes
-      @turn_points = 0
-      
-      @cubes.each { |c| c.toss }
-      @turn_points = @cubes.inject(0) do |sum, cube|
-        sum + if [5, 10].include? cube.face_up
-                cube.face_up
-              else
-                0
-              end
-      end
+      turn_points = 0
+      unscored_cubes = @cubes
 
-      current_player.bank_points @turn_points
-      @players.rotate!
+      until unscored_cubes.empty?
+        unscored_cubes.each &:toss
+        numbers, symbols = unscored_cubes.partition &:rolled_number?
+        turn_points += numbers.map(&:face_up).reduce(0, :+)
+
+        if numbers.empty? # Cosmic Wimpout! End of turn.
+          @players.rotate!
+          return
+        elsif symbols.empty? || !current_player.roll_again?(symbols)
+          current_player.bank_points turn_points
+          @players.rotate!
+          return
+        end
+
+        unscored_cubes = symbols
+        # Now re-roll!
+      end
     end
 
     # Just a helper, for development
@@ -48,6 +55,10 @@ module CosmicWimpout
     def bank_points(new_points)
       @points += new_points
     end
+
+    def roll_again?(cubes)
+
+    end
   end
 
   class Cube
@@ -59,6 +70,10 @@ module CosmicWimpout
 
     def toss
       @face_up = @sides.sample
+    end
+
+    def rolled_number?
+      [5, 10].include? self.face_up
     end
   end
 

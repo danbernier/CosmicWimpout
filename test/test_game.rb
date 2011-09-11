@@ -6,7 +6,9 @@ require 'cosmic_wimpout'
 describe CosmicWimpout::Game do
 
   before do
-    @game = CosmicWimpout::Game.new "Tortoise", "Achilles"
+    @tortoise = CosmicWimpout::Player.new "Tortoise"
+    @achilles = CosmicWimpout::Player.new "Achilles"
+    @game = CosmicWimpout::Game.new @tortoise, @achilles
   end
 
   describe "when played by several people" do
@@ -33,12 +35,7 @@ describe CosmicWimpout::Game do
     it "should add the turn points to the current player's total" do
       fox_the_dice(5, 5, 5, 10, 10)
       @game.toss_cubes
-
-      # Cycle through the other players (sheesh)
-      fox_the_dice(:two, :two, :three, :three, :four)
-      @game.toss_cubes; @game.toss_cubes
-
-      @game.current_player.points.must_equal 35
+      @tortoise.points.must_equal 35
     end
   end
 
