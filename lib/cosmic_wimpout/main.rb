@@ -6,8 +6,6 @@ module CosmicWimpout
 
       @cubes = [Cube.new(:two, :three, :four, 5, :six, 10)] * 4
       @cubes.push Cube.new(:two, :sun, :four, 5, :six, 10)
-
-      start_next_turn
     end
 
     def current_player
@@ -15,6 +13,8 @@ module CosmicWimpout
     end
 
     def toss_cubes
+      @turn_points = 0
+      
       @cubes.each { |c| c.toss }
       @turn_points = @cubes.inject(0) do |sum, cube|
         sum + if [5, 10].include? cube.face_up
@@ -26,17 +26,11 @@ module CosmicWimpout
 
       current_player.bank_points @turn_points
       @players.rotate!
-      start_next_turn
     end
 
     # Just a helper, for development
     def to_s
       @players * "\n"
-    end
-
-    private
-    def start_next_turn
-      @turn_points = 0
     end
   end
 
