@@ -32,11 +32,11 @@ I have something playable all along the way.
 1. _Start throwing dice. Each turn, the player throws all 5 dice, and
    gets points for any numbered dice. End of turn, bank your points._
    **DONE**
-2. If you toss the dice, and some come up symbols, you can choose to
+2. _If you toss the dice, and some come up symbols, you can choose to
    re-throw them for more points, or bank this turn's points. If you
    ever throw _all_ symbols, your turn ends, and you lose this turn's
    points (a "cosmic wimpout!"). Once you're out of dice, your turn
-   ends - bank any points you earned.
+   ends - bank any points you earned._ **DONE**
 3. Don't let Players with zero banked points end their turn until they
    have 35 or more points for the turn.
 4. "You may not want to, but you must." If you've scored on all 5
