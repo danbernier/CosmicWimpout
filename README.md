@@ -48,7 +48,7 @@ That's far enough for right now. We'll get to THE FLASH soon enough.
 
 ## OH WAIT, YOU WANT TO ACTUALLY PLAY IT?
 
-Now you can. Load code(icw.rb) in code(irb), construct an code(IrbGame)
+Now you can. Load icw.rb in irb, construct an IrbGame
 with the names of your players, and start sharing the keyboard.
 
 ```
