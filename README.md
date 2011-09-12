@@ -43,8 +43,18 @@ I have something playable all along the way.
    dice, throw all 5 dice again, and keep gathering points.
 5. End-game scenario: once one Player gets 500 points (or 300 -
    parameterize), end the game. (Add the "Last Licks" rule later.)
+6. FLASH. If you roll three-of-a-kind, either numbers or symbols,
+   you get 10x that many points added to your turn. Examples:
+   * if you roll 5, 10, six, six, six, earn 5 + 10 + (6 * 10) = 75 points
+   * if you roll 10, 10, 10, six, 5, earn 5 + (10 * 10) = 105 points
+7. Clear the Flash. If you roll a flash, roll the remaining
+   unscored cubes (or, if you scored on all of them, roll all 5), until
+   they all come up different from the value you flashed. If you rolled
+   [5, 5, 5, two, three], you have to roll the other two cubes until 
+   neither comes up 5. If you rolled [5, 5, four, four, four], you have
+   to roll ALL FIVE CUBES until none comes up four.
 
-That's far enough for right now. We'll get to THE FLASH soon enough.
+That's far enough for right now.
 
 ## OH WAIT, YOU WANT TO ACTUALLY PLAY IT?
 
