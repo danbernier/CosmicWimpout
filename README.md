@@ -46,4 +46,56 @@ I have something playable all along the way.
 
 That's far enough for right now. We'll get to THE FLASH soon enough.
 
+## OH WAIT, YOU WANT TO ACTUALLY PLAY IT?
 
+Now you can. Load code(icw.rb) in code(irb), construct an code(IrbGame)
+with the names of your players, and start sharing the keyboard.
+
+```
+dan@prodigal:~/projects/cosmicwimpout$ irb
+ruby-1.9.2-p180 :001 > load 'icw.rb' # That's Interactive Cosmic Wimpout, kids.
+ => true
+ruby-1.9.2-p180 :002 > g = IrbGame.new 'Fred', 'Wilma'
+ => #<IrbGame:0x8667b48 ...>
+ruby-1.9.2-p180 :003 > g.take_turn
+Fred has 0 points
+Wilma has 0 points
+Fred's turn.
+Tossed: four, three, three, six, Black four
+ => nil
+ (some boring turns removed...)
+ruby-1.9.2-p180 :006 > g.take_turn
+Wilma has 0 points
+Fred has 0 points
+Wilma's turn.
+Tossed: 10, 5, six, 10, Black six
+Tossed: three, Black 10
+Wilma earned 35 this turn!
+ => nil
+ruby-1.9.2-p180 :007 > g.take_turn
+Fred has 0 points
+Wilma has 35 points
+Fred's turn.
+Tossed: six, four, 10, 5, Black 5
+Tossed: two, two
+ => nil
+ruby-1.9.2-p180 :008 > g.take_turn
+Wilma has 35 points
+Fred has 0 points
+Wilma's turn.
+Tossed: two, six, 10, two, Black 5
+
+> Wilma, you have 15 points so far this turn.
+> Do you want to re-roll these cubes?
+> two, six, two
+> Roll 'em? (y, n) y
+Tossed: three, 10, 5
+
+> Wilma, you have 30 points so far this turn.
+> Do you want to re-roll these cubes?
+> three
+> Roll 'em? (y, n) n
+Wilma earned 30 this turn!
+ => nil
+
+```

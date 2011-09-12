@@ -55,11 +55,6 @@ module CosmicWimpout
     def toss cubes
       cubes.each &:toss
     end
-
-    # Just a helper, for development
-    def to_s
-      @players * "\n"
-    end
   end
 
   class Player
@@ -70,7 +65,7 @@ module CosmicWimpout
     end
 
     def to_s
-      "Player #{@name}, #{@points} points"
+      "#{@name} has #{@points} points"
     end
 
     def bank_points new_points

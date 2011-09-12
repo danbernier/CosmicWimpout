@@ -22,9 +22,26 @@ class IrbGame < CosmicWimpout::Game
     super *player_names.map { |name| IrbPlayer.new(name) }
   end
 
+  def take_turn
+    puts "#{@players * "\n"}"
+
+    # Cache it: super() will change current_player.
+    cp = current_player
+    puts "#{cp.name}'s turn."
+
+    orig_score = cp.points
+    super
+    new_score = cp.points
+    if new_score > orig_score
+      new_points = new_score - orig_score
+      puts "#{cp.name} earned #{new_points} points this turn!"
+    end
+
+  end
+
   def toss cubes
     super cubes
-    puts "\nTossed: #{cubes * ', '}"
+    puts "Tossed: #{cubes * ', '}"
   end
 end
 
