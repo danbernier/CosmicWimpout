@@ -46,23 +46,38 @@ I have something playable all along the way.
    ends - bank any points you earned._ **DONE**
 3. _Don't let Players with zero banked points end their turn until they
    have 35 or more points for the turn._ **DONE**
-4. _"You may not want to, but you must." If you've scored on all 5
+4. _**You may not want to, but you must.** If you've scored on all 5
    cubes, throw all 5 cubes again, and keep gathering points._ **DONE**
 5. End-game scenario: once one Player gets 500 points (or 300 -
-   parameterize), end the game. (Add the "Last Licks" rule later.)
-6. FLASH. If you toss three-of-a-kind, either numbers or symbols,
+   parameterize), end the game.
+6. **Last Licks** When one Player gets 500 (or 300) points, yes, end the game -
+   but first, every other player gets one last turn. Only after the rest of the
+   players earn their last-licks points, can you determine who has the most
+   points, and is the winner.
+7. **The Flaming Sun** if the black cube comes up with the :sun, you can count
+   it as whatever you like.
+8. **Flash** If you toss three-of-a-kind, either numbers or symbols,
    you get 10x that many points added to your turn. Examples:
    * If you toss [5, 10, six, six, six], earn 5 + 10 + (6 * 10) = 75 points.
    * If you toss [10, 10, 10, six, 5], earn 5 + (10 * 10) = 105 points.
-7. Clear the Flash. If you toss a flash, toss the remaining
+9. **Clear the Flash** If you toss a flash, toss the remaining
    unscored cubes (or, if you scored on all of them, toss all 5), until
    they all come up different from the value you flashed.
    * If you tossed [5, 5, 5, two, three], you get 50 points, but you have
      to toss the other two cubes until neither comes up 5.
    * If you tossed [5, 5, four, four, four], you get 40 + 5 + 5 = 50 points,
      but you have to toss ALL FIVE CUBES until none comes up four.
-
-That's far enough for right now.
+10. **The Flaming Sun Rule** if you toss two-of-a-kind and a Flaming Sun, you MUST
+   count the sun as whatever the two-of-a-kind was of, to complete the flash.
+   Examples:
+   * If you toss [sun, two, six, 5, four], count the sun as whatever you want.
+   * If you toss [sun, two, two, 5, four], the sun MUST be a two.
+11. **Freight Train** If you toss 5 matching faces (all twos, all fours, etc),
+   you earn 100 times the face-value! Five twos = 200, Five fours = 400, etc.
+12. **INSTANT WINNER** If you toss 5 sixes, you win the game! Instantly! No Last
+   Licks or anything!
+13. **Super-Nova** If you toss 5 10s, that is just Too Many Points. You are
+   instantly out of the game.
 
 ## OH WAIT, YOU WANT TO ACTUALLY PLAY IT?
 
