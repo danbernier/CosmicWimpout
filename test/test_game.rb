@@ -83,22 +83,32 @@ describe CosmicWimpout::Game do
     end
   end
 
-  describe "when only numbers are rolled" do
-    it "should end the turn immediately, with all the points" do
-      fox_the_dice 5, 5, 10, 10, 10
+  describe "when the player scores on all 5 cubes" do
+    it "must make them reroll all 5 cubes" do
+      fox_the_dice 5, 5, 10, 10, [:two, 10]
+
+      @tortoise.points = 100
+      @tortoise.rerolls_if do |cubes, turn_points|
+        turn_points <= 30 # Just make him say 'yes', the first time.
+      end
 
       @game.take_turn
 
-      @tortoise.points.must_equal 40
-      @tortoise.roll_decisions.size.must_equal 0
+      # He started with 100, he got 40 from first round, & 30 from second.
+      @tortoise.points.must_equal 170
     end
   end
 
   describe "when the turn ends" do
     it "should add the turn points to the current player's total" do
-      fox_the_dice(5, 5, 5, 10, 10)
+      # TODO This will break when we introduce the flash rule.
+      fox_the_dice(5, 5, 5, 10, :two)
+      @tortoise.points = 100
+      @tortoise.rerolls_if { false }
+
       @game.take_turn
-      @tortoise.points.must_equal 35
+
+      @tortoise.points.must_equal 125
     end
   end
 

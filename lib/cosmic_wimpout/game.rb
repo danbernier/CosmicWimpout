@@ -27,17 +27,18 @@ module CosmicWimpout
           return
 
         elsif symbols.empty?
-          current_player.bank_points(turn_points)
-          @players.rotate!
-          return
+          unscored_cubes = @cubes
 
         elsif player_quits(current_player, symbols, turn_points)
           current_player.bank_points(turn_points)
           @players.rotate!
           return
+
+        else
+          unscored_cubes = symbols
+
         end
 
-        unscored_cubes = symbols
         # Now re-roll!
       end
     end

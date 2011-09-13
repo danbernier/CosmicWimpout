@@ -39,8 +39,8 @@ I have something playable all along the way.
    ends - bank any points you earned._ **DONE**
 3. _Don't let Players with zero banked points end their turn until they
    have 35 or more points for the turn._ **DONE**
-4. "You may not want to, but you must." If you've scored on all 5
-   dice, throw all 5 dice again, and keep gathering points.
+4. _"You may not want to, but you must." If you've scored on all 5
+   dice, throw all 5 dice again, and keep gathering points._ **DONE**
 5. End-game scenario: once one Player gets 500 points (or 300 -
    parameterize), end the game. (Add the "Last Licks" rule later.)
 6. FLASH. If you roll three-of-a-kind, either numbers or symbols,
