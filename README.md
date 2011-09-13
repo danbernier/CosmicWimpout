@@ -87,7 +87,7 @@ with the names of your players, and start sharing the keyboard.
 dan@prodigal:~/projects/cosmicwimpout$ irb
 ruby-1.9.2-p180 :001 > load 'icw.rb' # That's Interactive Cosmic Wimpout, kids.
  => true
-ruby-1.9.2-p180 :002 > g = IrbGame.new 'Fred', 'Wilma'
+ruby-1.9.2-p180 :002 > g = start 'Fred', 'Wilma'
  => #<IrbGame:0x8667b48 ...>
 ruby-1.9.2-p180 :003 > g.take_turn
 Fred has 0 points
