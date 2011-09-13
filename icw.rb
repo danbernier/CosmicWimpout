@@ -1,8 +1,13 @@
 $LOAD_PATH << 'lib'
 require 'cosmic_wimpout'
 
+# This entire file is just here to help with development. It's meant to be
+# loaded in irb, again and again and again.
+
 module CosmicWimpout
 
+  # Implements to_s. I haven't yet decided whether this is the to_s for
+  # everyone.
   class Cube
 
     def to_s
@@ -14,61 +19,71 @@ module CosmicWimpout
     end
 
   end
-end
 
-class IrbGame < CosmicWimpout::Game
 
-  def self.start
-    IrbGame.new 'Dan', 'Mary'
-  end
+  module IrbVersion
 
-  def initialize(*player_names)
-    super *player_names.map { |name| IrbPlayer.new(name) }
-  end
+    # An irb-playable subclass of CosmicWimpout::Game; uses irb to let you
+    # know what's going on.
+    class IrbGame < CosmicWimpout::Game
 
-  def take_turn
-    puts "#{@players * "\n"}"
+      def initialize(*player_names)
+        super *player_names.map { |name| IrbPlayer.new(name) }
+      end
 
-    # Cache it: super() will change current_player.
-    cp = current_player
-    puts "#{cp.name}'s turn."
+      def take_turn
+        puts "#{@players * "\n"}"
 
-    orig_score = cp.points
-    super
-    new_score = cp.points
-    if new_score > orig_score
-      new_points = new_score - orig_score
-      puts "#{cp.name} earned #{new_points} points this turn!"
+        # Cache it: super() will change current_player.
+        cp = current_player
+        puts "#{cp.name}'s turn."
+
+        orig_score = cp.points
+        super
+        new_score = cp.points
+        if new_score > orig_score
+          new_points = new_score - orig_score
+          puts "#{cp.name} earned #{new_points} points this turn!"
+        end
+
+      end
+
+      def toss(cubes)
+        super(cubes)
+        puts "Tossed: #{cubes * ', '}"
+      end
+
     end
 
-  end
+    # Asks the player, in irb, how to decide certain game actions.
+    class IrbPlayer < CosmicWimpout::Player
 
-  def toss(cubes)
-    super(cubes)
-    puts "Tossed: #{cubes * ', '}"
-  end
+      def toss_again?(cubes, turn_points)
+        puts
+        puts "> #{@name}, you have #{turn_points} points so far this turn."
+        puts "> Do you want to toss these cubes?"
+        puts "> #{cubes * ', '}"
 
+        answer = ask("> Toss 'em? (y, n) ")
+        answer.downcase == 'y'
+      end
+
+      def ask(prompt)
+        print(prompt)
+        gets.strip
+      end
+
+    end
+  end
 end
 
-class IrbPlayer < CosmicWimpout::Player
 
-  def toss_again?(cubes, turn_points)
-    puts
-    puts "> #{@name}, you have #{turn_points} points so far this turn."
-    puts "> Do you want to toss these cubes?"
-    puts "> #{cubes * ', '}"
-
-    answer = ask("> Toss 'em? (y, n) ")
-    answer.downcase == 'y'
-  end
-
-  def ask(prompt)
-    print(prompt)
-    gets.strip
-  end
-
+def start(*names)
+  names = ['Fred', 'Wilma'] if names.nil? || names.empty?
+  CosmicWimpout::IrbVersion::IrbGame.new *names
 end
 
+# Save typing - make it easier to reload the file, when it's changed.
 def ld
   load('icw.rb')
 end
