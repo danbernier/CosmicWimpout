@@ -2,7 +2,9 @@ $LOAD_PATH << 'lib'
 require 'cosmic_wimpout'
 
 module CosmicWimpout
+
   class Cube
+
     def to_s
       if black?
         "Black #{face_up}"
@@ -10,10 +12,12 @@ module CosmicWimpout
         face_up.to_s
       end
     end
+
   end
 end
 
 class IrbGame < CosmicWimpout::Game
+
   def self.start
     IrbGame.new 'Dan', 'Mary'
   end
@@ -43,9 +47,11 @@ class IrbGame < CosmicWimpout::Game
     super(cubes)
     puts "Tossed: #{cubes * ', '}"
   end
+
 end
 
 class IrbPlayer < CosmicWimpout::Player
+
   def roll_again?(cubes, turn_points)
     puts
     puts "> #{@name}, you have #{turn_points} points so far this turn."
@@ -60,6 +66,7 @@ class IrbPlayer < CosmicWimpout::Player
     print(prompt)
     gets.strip
   end
+
 end
 
 def ld

@@ -1,6 +1,9 @@
 module CosmicWimpout
+
   class Player
+
     attr_reader :name, :points
+
     def initialize(name)
       @name = name
       @points = 0
@@ -14,8 +17,13 @@ module CosmicWimpout
       @points += new_points
     end
 
+    # Sometimes, the player has to decide whether to re-roll.
+    # Subclasses of Player should override this in some creative way.
+    # For example, EagerPlayer might return true if turn_points > 45,
+    # and TimidPlayer might return true if turn_points > 10.
     def roll_again?(cubes, turn_points)
       true
     end
+
   end
 end

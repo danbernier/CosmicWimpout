@@ -108,16 +108,20 @@ describe CosmicWimpout::Game do
   end
 
   class FixedCube < CosmicWimpout::Cube
+
     def initialize(values)
       values = [values] unless Array === values
       @fixed_rolls = values.cycle
     end
+
     def toss
       @face_up = @fixed_rolls.next
     end
+
   end
 
   class MockPlayer < CosmicWimpout::Player
+
     attr_accessor :roll_decisions, :points
 
     def initialize(name)
@@ -133,6 +137,6 @@ describe CosmicWimpout::Game do
       @roll_decisions.push [cubes.map(&:face_up), turn_points]
       @reroll_when.call(cubes, turn_points)
     end
-  end
 
+  end
 end
