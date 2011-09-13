@@ -22,7 +22,7 @@ module CosmicWimpout
       @face_up = @sides.sample
     end
 
-    def rolled_number?
+    def tossed_a_number?
       [5, 10].include? self.face_up
     end
 

@@ -17,11 +17,11 @@ module CosmicWimpout
       @points += new_points
     end
 
-    # Sometimes, the player has to decide whether to re-roll.
+    # Sometimes, the player has to decide whether to re-toss the cubes.
     # Subclasses of Player should override this in some creative way.
     # For example, EagerPlayer might return true if turn_points > 45,
     # and TimidPlayer might return true if turn_points > 10.
-    def roll_again?(cubes, turn_points)
+    def toss_again?(cubes, turn_points)
       true
     end
 

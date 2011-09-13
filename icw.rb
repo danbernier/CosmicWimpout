@@ -52,13 +52,13 @@ end
 
 class IrbPlayer < CosmicWimpout::Player
 
-  def roll_again?(cubes, turn_points)
+  def toss_again?(cubes, turn_points)
     puts
     puts "> #{@name}, you have #{turn_points} points so far this turn."
-    puts "> Do you want to re-roll these cubes?"
+    puts "> Do you want to toss these cubes?"
     puts "> #{cubes * ', '}"
 
-    answer = ask("> Roll 'em? (y, n) ")
+    answer = ask("> Toss 'em? (y, n) ")
     answer.downcase == 'y'
   end
 
