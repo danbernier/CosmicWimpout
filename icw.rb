@@ -18,7 +18,7 @@ class IrbGame < CosmicWimpout::Game
     IrbGame.new 'Dan', 'Mary'
   end
 
-  def initialize *player_names
+  def initialize(*player_names)
     super *player_names.map { |name| IrbPlayer.new(name) }
   end
 
@@ -39,29 +39,29 @@ class IrbGame < CosmicWimpout::Game
 
   end
 
-  def toss cubes
-    super cubes
+  def toss(cubes)
+    super(cubes)
     puts "Tossed: #{cubes * ', '}"
   end
 end
 
 class IrbPlayer < CosmicWimpout::Player
-  def roll_again? cubes, turn_points
+  def roll_again?(cubes, turn_points)
     puts
     puts "> #{@name}, you have #{turn_points} points so far this turn."
     puts "> Do you want to re-roll these cubes?"
     puts "> #{cubes * ', '}"
 
-    answer = ask "> Roll 'em? (y, n) "
+    answer = ask("> Roll 'em? (y, n) ")
     answer.downcase == 'y'
   end
 
-  def ask prompt
-    print prompt
+  def ask(prompt)
+    print(prompt)
     gets.strip
   end
 end
 
 def ld
-  load 'icw.rb'
+  load('icw.rb')
 end

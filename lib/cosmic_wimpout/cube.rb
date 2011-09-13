@@ -2,7 +2,7 @@ module CosmicWimpout
   class Cube
     attr_reader :face_up
 
-    def initialize *sides
+    def initialize(*sides)
       @sides = sides
     end
 

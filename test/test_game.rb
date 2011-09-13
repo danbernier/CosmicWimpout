@@ -104,7 +104,7 @@ describe CosmicWimpout::Game do
 
   def fox_the_dice(*vals)
     fixed_cubes = vals.map { |v| FixedCube.new(v) }
-    cubes = @game.instance_variable_set :@cubes, fixed_cubes
+    cubes = @game.instance_variable_set(:@cubes, fixed_cubes)
   end
 
   class FixedCube < CosmicWimpout::Cube
@@ -120,18 +120,18 @@ describe CosmicWimpout::Game do
   class MockPlayer < CosmicWimpout::Player
     attr_accessor :roll_decisions, :points
 
-    def initialize name
-      super name
+    def initialize(name)
+      super(name)
       @roll_decisions = []
     end
 
-    def rerolls_if &block
+    def rerolls_if(&block)
       @reroll_when = block
     end
 
-    def roll_again? cubes, turn_points
+    def roll_again?(cubes, turn_points)
       @roll_decisions.push [cubes.map(&:face_up), turn_points]
-      @reroll_when.call cubes, turn_points
+      @reroll_when.call(cubes, turn_points)
     end
   end
 

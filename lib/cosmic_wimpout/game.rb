@@ -1,7 +1,7 @@
 module CosmicWimpout
 
   class Game
-    def initialize *players
+    def initialize(*players)
       @players = players
 
       @cubes = Array.new(4) { Cube.new(:two, :three, :four, 5, :six, 10) }
@@ -19,7 +19,7 @@ module CosmicWimpout
       until unscored_cubes.empty?
         toss unscored_cubes
 
-        numbers, symbols = unscored_cubes.partition &:rolled_number?
+        numbers, symbols = unscored_cubes.partition(&:rolled_number?)
         turn_points += numbers.map(&:face_up).reduce(0, :+)
 
         if numbers.empty? # Cosmic Wimpout! End of turn.
@@ -27,12 +27,12 @@ module CosmicWimpout
           return
 
         elsif symbols.empty?
-          current_player.bank_points turn_points
+          current_player.bank_points(turn_points)
           @players.rotate!
           return
 
         elsif player_quits(current_player, symbols, turn_points)
-          current_player.bank_points turn_points
+          current_player.bank_points(turn_points)
           @players.rotate!
           return
         end
@@ -52,7 +52,7 @@ module CosmicWimpout
       end
     end
 
-    def toss cubes
+    def toss(cubes)
       cubes.each &:toss
     end
   end
