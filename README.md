@@ -34,27 +34,26 @@ slip up - I just finished searching the code, replacing all references to
 I'll try to build the game in steps, so as to not go crazy, and so
 I have something playable all along the way.
 
-0. _Create a game, with named players, who have points. Cycle through
-   their turns, and collect points from each turn._ **DONE**
-1. _Start throwing cubes. Each turn, the player throws all 5 cubes, and
+0. **DONE** _Create a game, with named players, who have points. Cycle through
+   their turns, and collect points from each turn._
+1. **DONE** _Start throwing cubes. Each turn, the player throws all 5 cubes, and
    gets points for any numbered cubes. End of turn, bank your points._
-   **DONE**
-2. _If you toss the cubes, and some come up symbols, you can choose to
+2. **DONE** _If you toss the cubes, and some come up symbols, you can choose to
    re-toss the symbol cubes for more points, or bank this turn's points. If you
    ever throw **all** symbols, your turn ends, and you lose this turn's
    points (a "cosmic wimpout!"). Once you're out of cubes, your turn
-   ends - bank any points you earned._ **DONE**
-3. _Don't let Players with zero banked points end their turn until they
-   have 35 or more points for the turn._ **DONE**
-4. _**You may not want to, but you must.** If you've scored on all 5
-   cubes, throw all 5 cubes again, and keep gathering points._ **DONE**
-5. End-game scenario: once one Player gets 500 points (or 300 -
-   parameterize), end the game.
+   ends - bank any points you earned._
+3. **DONE** _Don't let Players with zero banked points end their turn until they
+   have 35 or more points for the turn._
+4. **DONE** _**You may not want to, but you must.** If you've scored on all 5
+   cubes, throw all 5 cubes again, and keep gathering points._
+5. End-game: once one Player gets 500 points (or 300 - parameterize), end the 
+   game.
 6. **Last Licks** When one Player gets 500 (or 300) points, yes, end the game -
    but first, every other player gets one last turn. Only after the rest of the
    players earn their last-licks points, can you determine who has the most
    points, and is the winner.
-7. **The Flaming Sun** if the black cube comes up with the :sun, you can count
+7. **The Flaming Sun** if the black cube comes up with the sun, you can count
    it as whatever you like.
 8. **Flash** If you toss three-of-a-kind, either numbers or symbols,
    you get 10x that many points added to your turn. Examples:
