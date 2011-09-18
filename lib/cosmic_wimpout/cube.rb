@@ -9,25 +9,52 @@ module CosmicWimpout
   # and BlackCube < Cube(:two, :sun, :four, 5, :six, 10).
   # That might make the whole 'black?' stuff clearer.
 
-  class Cube
+  # The main things about a Cube are:
+  # 1. What sides does it have? (White vs Black)
+  # 2. What happens when it's tossed? (Fixed vs Normal)
+  # Everything else should flow from there: ie, face_up, tossed_a_number? & black?.
 
-    attr_reader :face_up
+  module Cube
 
-    def initialize(*sides)
-      @sides = sides
+    module ClassMethods
+      attr_reader :sides
+
+      def has_sides(*sides)
+        @sides ||= sides
+      end
     end
 
-    def toss!
-      @face_up = @sides.sample
+    module InstanceMethods
+      attr_reader :face_up
+
+      def toss!
+        @face_up = self.class.sides.sample
+      end
+
+      def tossed_a_number?
+        [5, 10].include? self.face_up
+      end
+
+      def black? # Currently, just for irb
+        self.class.sides.include? :sun
+      end
     end
 
-    def tossed_a_number?
-      [5, 10].include? self.face_up
+    def self.included(klass)
+      klass.module_eval do
+        extend  ClassMethods
+        include InstanceMethods
+      end
     end
+  end
 
-    def black?
-      @sides.include? :sun
-    end
+  class WhiteCube
+    include Cube
+    has_sides :two, :three, :four, 5, :six, 10
+  end
 
+  class BlackCube
+    include Cube
+    has_sides :two, :sun, :four, 5, :six, 10
   end
 end

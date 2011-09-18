@@ -8,8 +8,7 @@ module CosmicWimpout
     def initialize(max_points, *players)
       @max_points = max_points
       @players = players
-      @cubes = Array.new(4) { Cube.new(:two, :three, :four, 5, :six, 10) }
-      @cubes.push Cube.new(:two, :sun, :four, 5, :six, 10)
+      @cubes = Array.new(4) { WhiteCube.new } + [BlackCube.new]
     end
 
     def current_player

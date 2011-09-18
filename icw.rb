@@ -8,16 +8,16 @@ module CosmicWimpout
 
   # Implements to_s. I haven't yet decided whether this is the to_s for
   # everyone.
-  class Cube
-
+  class WhiteCube
     def to_s
-      if black?
-        "Black #{face_up}"
-      else
-        face_up.to_s
-      end
+      face_up.to_s
     end
+  end
 
+  class BlackCube
+    def to_s
+      "Black #{face_up}"
+    end
   end
 
 
