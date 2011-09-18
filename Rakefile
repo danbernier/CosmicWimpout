@@ -1,8 +1,4 @@
-require 'rake'
+require 'rake/testtask'
 
+Rake::TestTask.new
 task :default => :test
-
-task :test do
-  $LOAD_PATH.push './lib'
-  Dir.glob('test/*.rb').each { |f| load f }
-end
