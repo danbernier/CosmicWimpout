@@ -47,8 +47,8 @@ I have something playable all along the way.
    have 35 or more points for the turn._
 4. **DONE** _**You may not want to, but you must.** If you've scored on all 5
    cubes, throw all 5 cubes again, and keep gathering points._
-5. End-game: once one Player gets 500 points (or 300 - parameterize), end the 
-   game.
+5. **DONE** End-game: once one Player gets 500 points (or 300 - parameterize), 
+   end the game.
 6. **Last Licks** When one Player gets 500 (or 300) points, yes, end the game -
    but first, every other player gets one last turn. Only after the rest of the
    players earn their last-licks points, can you determine who has the most
