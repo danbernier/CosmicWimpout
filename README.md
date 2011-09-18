@@ -59,7 +59,7 @@ I have something playable all along the way.
    you get 10x that many points added to your turn. Examples:
    * If you toss [5, 10, six, six, six], earn 5 + 10 + (6 * 10) = 75 points.
    * If you toss [10, 10, 10, six, 5], earn 5 + (10 * 10) = 105 points.
-9. **Clear the Flash** If you toss a flash, toss the remaining
+9. **The Futless Rule: Clear the Flash** If you toss a flash, toss the remaining
    unscored cubes (or, if you scored on all of them, toss all 5), until
    they all come up different from the value you flashed.
    * If you tossed [5, 5, 5, two, three], you get 50 points, but you have
