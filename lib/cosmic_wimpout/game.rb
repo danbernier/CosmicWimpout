@@ -10,7 +10,11 @@ module CosmicWimpout
     end
 
     def current_player
-      @players.first
+      if in_last_licks?
+        @last_licks_remaining_turns.first
+      else
+        @players.first
+      end
     end
 
     def take_turn
@@ -53,11 +57,40 @@ module CosmicWimpout
         current_player.bank_points(opts[:and_bank])
       end
 
-      if over?
+      if should_start_last_licks?
+        start_last_licks
+      elsif over?  # This never runs: over? checks whether @last_licks_remaining_turns is empty, but since we haven't 
+                    # called move_to_next_player yet, we're not .shifting it, so it's non-empty - so we think
+                    # the game isn't over yet. =?
+                    # There's a failing test for it, at least.
         announce_winner
+      else
+        move_to_next_player  # Start the next player's turn
+      end
+    end
+
+    def move_to_next_player
+      if in_last_licks?
+        @last_licks_remaining_turns.shift
       else
         @players.rotate!
       end
+    end
+
+    def should_start_last_licks?
+      !in_last_licks? && @players.any? { |player| player.points >= @max_points }
+    end
+
+    def start_last_licks
+      @last_licks_remaining_turns = @players[1..-1]
+    end
+
+    def in_last_licks?
+      !@last_licks_remaining_turns.nil? && !@last_licks_remaining_turns.empty?
+    end
+
+    def over?
+      !@last_licks_remaining_turns.nil? && @last_licks_remaining_turns.empty?
     end
 
     def player_quits(player, cubes_to_toss, turn_points)
@@ -72,10 +105,6 @@ module CosmicWimpout
 
     def toss(cubes)
       cubes.each &:toss!
-    end
-
-    def over?
-      @players.any? { |p| p.points >= @max_points }
     end
 
     def announce_winner

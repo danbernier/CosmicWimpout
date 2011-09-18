@@ -9,6 +9,9 @@ describe CosmicWimpout::Game do
     @tortoise = MockPlayer.new "Tortoise"
     @achilles = MockPlayer.new "Achilles"
     @game = CosmicWimpout::Game.new(500, @tortoise, @achilles)
+
+    # TODO make the Tortoise never re-roll, and Achilles always re-roll
+    # (That's what your tests are doing, anyway.)
   end
 
   describe "when played by several people" do
@@ -113,28 +116,54 @@ describe CosmicWimpout::Game do
   end
 
   describe "when one player gets more than the max number of points" do
-    it "should not let anyone take a turn" do
+    it "should enter last-licks" do
       @tortoise.points = 470
+      @achilles.points = 0
       fox_the_dice(10, 10, 5, 5, :two)
       @tortoise.tosses_if { false }
+      @achilles.tosses_if { true }
+
+      @game.take_turn  # Tortoise earns 30 points: start last licks.
+      @game.in_last_licks?.must_equal true
+      @game.over?.must_equal false
+      @game.take_turn  # Achilles' turn: he earns 0 points.
+
+      # With no other players, and Achilles' turn over, the game is over.
+      @game.over?.must_equal true
+      @game.in_last_licks?.must_equal false
+      @game.winning_player.must_equal @tortoise
+    end
+  end
+
+  describe "when the game is over" do
+    it "should not let anyone take a turn" do
+      @tortoise.points = 470
+      @achilles.points = 0
+      fox_the_dice(10, 10, 5, 5, :two)
+      @tortoise.tosses_if { false }
+      @achilles.tosses_if { true } # Too eager: he'll wimpout on the two.
 
       @game.over?.must_equal false
-      @game.take_turn
+      @game.take_turn  # Tortoise earns 30 points: enter last licks
+      @game.take_turn  # Achilles wimps out, ending the game.
       @game.over?.must_equal true
       proc { @game.take_turn }.must_raise CosmicWimpout::GameOverException
     end
 
     it "should announce the correct winner" do
       @tortoise.points = 470
+      @achilles.points = 0
       fox_the_dice(10, 10, 5, 5, :two)
       @tortoise.tosses_if { false }
+      @achilles.tosses_if { true }
 
       def @game.announce_winner
         @winner_was_announced = true
       end
 
       @game.winning_player.must_be_nil
-      @game.take_turn
+      @game.take_turn  # Tortoise starts last licks
+      @game.take_turn  # Achilles wimps out
       @game.winning_player.must_equal @tortoise
       @game.instance_variable_get(:@winner_was_announced).must_equal true
     end
