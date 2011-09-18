@@ -16,7 +16,7 @@ describe CosmicWimpout::Game do
 
   describe "when played by several people" do
     it "should cycle through the players" do
-      fox_the_dice :two, :two, :three, :three, :four
+      fox_the_cubes :two, :two, :three, :three, :four
 
       @game.current_player.name.must_equal "Tortoise"
       2.times do
@@ -30,7 +30,7 @@ describe CosmicWimpout::Game do
 
   describe "when numbers and symbols are tossed" do
     it "should let the player decide: re-toss the symbol cubes?" do
-      fox_the_dice(5, 10, [:two, 10], [:two, 10], [:three, :four])
+      fox_the_cubes(5, 10, [:two, 10], [:two, 10], [:three, :four])
 
       @tortoise.points = 100
       @achilles.points = 100
@@ -62,7 +62,7 @@ describe CosmicWimpout::Game do
 
   describe "when players have no points banked" do
     it "won't let them stop until they have 35 points" do
-      fox_the_dice(5, :two, :four, :four, :six)
+      fox_the_cubes(5, :two, :four, :four, :six)
 
       @game.take_turn
 
@@ -77,7 +77,7 @@ describe CosmicWimpout::Game do
 
   describe "when only symbols are tossed" do
     it "should end the turn immediately, with 0 points" do
-      fox_the_dice :two, :three, :six, :two, :four
+      fox_the_cubes :two, :three, :six, :two, :four
 
       @game.take_turn
 
@@ -88,7 +88,7 @@ describe CosmicWimpout::Game do
 
   describe "when the player scores on all 5 cubes" do
     it "must make them re-toss all 5 cubes" do
-      fox_the_dice 5, 5, 10, 10, [:two, 10]
+      fox_the_cubes 5, 5, 10, 10, [:two, 10]
 
       @tortoise.points = 100
       @tortoise.tosses_if do |cubes, turn_points|
@@ -105,7 +105,7 @@ describe CosmicWimpout::Game do
   describe "when the turn ends" do
     it "should add the turn points to the current player's total" do
       # TODO This will break when we introduce the flash rule.
-      fox_the_dice(5, 5, 5, 10, :two)
+      fox_the_cubes(5, 5, 5, 10, :two)
       @tortoise.points = 100
       @tortoise.tosses_if { false }
 
@@ -119,7 +119,7 @@ describe CosmicWimpout::Game do
     it "should enter last-licks" do
       @tortoise.points = 470
       @achilles.points = 0
-      fox_the_dice(10, 10, 5, 5, :two)
+      fox_the_cubes(10, 10, 5, 5, :two)
       @tortoise.tosses_if { false }
       @achilles.tosses_if { true }
 
@@ -139,7 +139,7 @@ describe CosmicWimpout::Game do
     it "should not let anyone take a turn" do
       @tortoise.points = 470
       @achilles.points = 0
-      fox_the_dice(10, 10, 5, 5, :two)
+      fox_the_cubes(10, 10, 5, 5, :two)
       @tortoise.tosses_if { false }
       @achilles.tosses_if { true } # Too eager: he'll wimpout on the two.
 
@@ -153,7 +153,7 @@ describe CosmicWimpout::Game do
     it "should announce the correct winner" do
       @tortoise.points = 470
       @achilles.points = 0
-      fox_the_dice(10, 10, 5, 5, :two)
+      fox_the_cubes(10, 10, 5, 5, :two)
       @tortoise.tosses_if { false }
       @achilles.tosses_if { true }
 
@@ -173,7 +173,7 @@ describe CosmicWimpout::Game do
   # (Actually, the game is unclear about how to handle a tie. I guess most
   #  players just keep going.)
 
-  def fox_the_dice(*vals)
+  def fox_the_cubes(*vals)
     fixed_cubes = vals.map { |v| FixedCube.new(v) }
     cubes = @game.instance_variable_set(:@cubes, fixed_cubes)
   end
