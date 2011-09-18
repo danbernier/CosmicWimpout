@@ -1,3 +1,6 @@
+require_relative 'player'
+require_relative 'cube'
+
 module CosmicWimpout
 
   class Game
