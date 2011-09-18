@@ -124,7 +124,7 @@ describe CosmicWimpout::Game do
       proc { @game.take_turn }.must_raise CosmicWimpout::GameOverException
     end
 
-    it "should announce the winner" do
+    it "should announce the correct winner" do
       @tortoise.points = 470
       fox_the_dice(10, 10, 5, 5, :two)
       @tortoise.tosses_if { false }
@@ -133,7 +133,9 @@ describe CosmicWimpout::Game do
         @winner_was_announced = true
       end
 
+      @game.winning_player.must_be_nil
       @game.take_turn
+      @game.winning_player.must_equal @tortoise
       @game.instance_variable_get(:@winner_was_announced).must_equal true
     end
   end

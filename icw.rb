@@ -54,6 +54,11 @@ module CosmicWimpout
         puts "Tossed: #{cubes * ', '}"
       end
 
+      def announce_winner
+        winner = winning_player
+        puts "Game Over! #{winner.name} wins with #{winner.points} points!"
+      end
+
     end
 
     # Asks the player, in irb, how to decide certain game actions.

@@ -79,8 +79,13 @@ module CosmicWimpout
     end
 
     def announce_winner
-      # This isn't really doing much yet...
-      winner = @players.sort_by(&:points).last
+      # Just a hook for subclasses (I know we don't really need this, but...)
+    end
+
+    def winning_player
+      if over?
+        @players.sort_by(&:points).last
+      end
     end
 
   end
