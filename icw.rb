@@ -27,8 +27,9 @@ module CosmicWimpout
     # know what's going on.
     class IrbGame < CosmicWimpout::Game
 
-      def initialize(*player_names)
-        super *player_names.map { |name| IrbPlayer.new(name) }
+      def initialize(max_points, *player_names)
+        irb_players = player_names.map { |name| IrbPlayer.new(name) }
+        super(max_points, *irb_players)
       end
 
       def take_turn
@@ -78,9 +79,9 @@ module CosmicWimpout
 end
 
 
-def start(*names)
+def game_to(max_points, *names)
   names = ['Fred', 'Wilma'] if names.nil? || names.empty?
-  CosmicWimpout::IrbVersion::IrbGame.new *names
+  CosmicWimpout::IrbVersion::IrbGame.new(max_points, *names)
 end
 
 # Save typing - make it easier to reload the file, when it's changed.

@@ -8,7 +8,7 @@ describe CosmicWimpout::Game do
   before do
     @tortoise = MockPlayer.new "Tortoise"
     @achilles = MockPlayer.new "Achilles"
-    @game = CosmicWimpout::Game.new @tortoise, @achilles
+    @game = CosmicWimpout::Game.new(500, @tortoise, @achilles)
   end
 
   describe "when played by several people" do
@@ -109,6 +109,19 @@ describe CosmicWimpout::Game do
       @game.take_turn
 
       @tortoise.points.must_equal 125
+    end
+  end
+  
+  describe "when one player has more than the max number of points" do
+    it "should not let anyone take a turn" do
+      @tortoise.points = 470
+      fox_the_dice(10, 10, 5, 5, :two)
+      @tortoise.tosses_if { false }
+      
+      @game.over?.must_equal false
+      @game.take_turn
+      @game.over?.must_equal true
+      proc { @game.take_turn }.must_raise CosmicWimpout::GameOverException
     end
   end
 

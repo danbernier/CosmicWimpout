@@ -2,7 +2,8 @@ module CosmicWimpout
 
   class Game
 
-    def initialize(*players)
+    def initialize(max_points, *players)
+      @max_points = max_points
       @players = players
       @cubes = Array.new(4) { Cube.new(:two, :three, :four, 5, :six, 10) }
       @cubes.push Cube.new(:two, :sun, :four, 5, :six, 10)
@@ -13,6 +14,9 @@ module CosmicWimpout
     end
 
     def take_turn
+
+      raise GameOverException if over?
+
       turn_points = 0
       unscored_cubes = @cubes
 
@@ -57,5 +61,12 @@ module CosmicWimpout
       cubes.each &:toss!
     end
 
+    def over?
+      @players.any? { |p| p.points >= @max_points }
+    end
+
+  end
+
+  class GameOverException < Exception
   end
 end
