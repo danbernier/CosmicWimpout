@@ -54,6 +54,14 @@ module CosmicWimpout
         puts "Tossed: #{cubes * ', '}"
       end
 
+      def start_last_licks
+        puts "
+        ---------------
+        @ Last Licks! @
+        ---------------
+        ".gsub(/^\s+/, '')
+      end
+
       def announce_winner
         winner = winning_player
         puts "Game Over! #{winner.name} wins with #{winner.points} points!"
