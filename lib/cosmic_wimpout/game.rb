@@ -59,13 +59,12 @@ module CosmicWimpout
 
       if should_start_last_licks?
         start_last_licks
-      elsif over?  # This never runs: over? checks whether @last_licks_remaining_turns is empty, but since we haven't 
-                    # called move_to_next_player yet, we're not .shifting it, so it's non-empty - so we think
-                    # the game isn't over yet. =?
-                    # There's a failing test for it, at least.
-        announce_winner
       else
         move_to_next_player  # Start the next player's turn
+      end
+
+      if over?
+        announce_winner
       end
     end
 
