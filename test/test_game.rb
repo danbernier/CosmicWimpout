@@ -111,19 +111,36 @@ describe CosmicWimpout::Game do
       @tortoise.points.must_equal 125
     end
   end
-  
-  describe "when one player has more than the max number of points" do
+
+  describe "when one player gets more than the max number of points" do
     it "should not let anyone take a turn" do
       @tortoise.points = 470
       fox_the_dice(10, 10, 5, 5, :two)
       @tortoise.tosses_if { false }
-      
+
       @game.over?.must_equal false
       @game.take_turn
       @game.over?.must_equal true
       proc { @game.take_turn }.must_raise CosmicWimpout::GameOverException
     end
+
+    it "should announce the winner" do
+      @tortoise.points = 470
+      fox_the_dice(10, 10, 5, 5, :two)
+      @tortoise.tosses_if { false }
+
+      def @game.announce_winner
+        @winner_was_announced = true
+      end
+
+      @game.take_turn
+      @game.instance_variable_get(:@winner_was_announced).must_equal true
+    end
   end
+
+  # TODO when you get to last licks, make sure you test for a tie game.
+  # (Actually, the game is unclear about how to handle a tie. I guess most
+  #  players just keep going.)
 
   def fox_the_dice(*vals)
     fixed_cubes = vals.map { |v| FixedCube.new(v) }

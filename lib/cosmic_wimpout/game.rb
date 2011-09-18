@@ -27,15 +27,14 @@ module CosmicWimpout
         turn_points += numbers.map(&:face_up).reduce(0, :+)
 
         if numbers.empty? # Cosmic Wimpout! End of turn.
-          @players.rotate!
+          end_turn
           return
 
         elsif symbols.empty?
           unscored_cubes = @cubes
 
         elsif player_quits(current_player, symbols, turn_points)
-          current_player.bank_points(turn_points)
-          @players.rotate!
+          end_turn(:and_bank => turn_points)
           return
 
         else
@@ -44,6 +43,20 @@ module CosmicWimpout
         end
 
         # Now toss the left-over cubes!
+      end
+    end
+
+    # end_turn
+    # end_turn(:and_bank => 140)
+    def end_turn(opts={})
+      if opts.has_key? :and_bank
+        current_player.bank_points(opts[:and_bank])
+      end
+
+      if over?
+        announce_winner
+      else
+        @players.rotate!
       end
     end
 
@@ -63,6 +76,11 @@ module CosmicWimpout
 
     def over?
       @players.any? { |p| p.points >= @max_points }
+    end
+
+    def announce_winner
+      # This isn't really doing much yet...
+      winner = @players.sort_by(&:points).last
     end
 
   end
