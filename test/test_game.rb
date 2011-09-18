@@ -174,11 +174,11 @@ describe CosmicWimpout::Game do
   #  players just keep going.)
 
   def fox_the_cubes(*vals)
-    fixed_cubes = vals.map { |v| FixedCube.new(v) }
-    cubes = @game.instance_variable_set(:@cubes, fixed_cubes)
+    foxed_cubes = vals.map { |v| FoxedCube.new(v) }
+    cubes = @game.instance_variable_set(:@cubes, foxed_cubes)
   end
 
-  class FixedCube < CosmicWimpout::Cube
+  class FoxedCube < CosmicWimpout::Cube
 
     def initialize(values)
       values = [values] unless Array === values
