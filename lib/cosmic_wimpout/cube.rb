@@ -17,8 +17,7 @@ module CosmicWimpout
       @sides = sides
     end
 
-    # TODO rename this to toss! ?
-    def toss
+    def toss!
       @face_up = @sides.sample
     end
 

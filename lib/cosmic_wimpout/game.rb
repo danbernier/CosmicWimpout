@@ -54,7 +54,7 @@ module CosmicWimpout
     end
 
     def toss(cubes)
-      cubes.each &:toss
+      cubes.each &:toss!
     end
 
   end
