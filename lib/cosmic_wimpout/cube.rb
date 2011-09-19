@@ -4,15 +4,10 @@ module CosmicWimpout
   # (At least we don't have the singular 'die' everywhere.)
   # Represents a six-sided cube. Die. You know, a d6.
 
-  # TODO might consider giving Cube a class-method for defining the sides,
-  # and having WhiteCube < Cube(:two, :three, :four, 5, :six, 10),
-  # and BlackCube < Cube(:two, :sun, :four, 5, :six, 10).
-  # That might make the whole 'black?' stuff clearer.
-
   # The main things about a Cube are:
   # 1. What sides does it have? (White vs Black)
   # 2. What happens when it's tossed? (Fixed vs Normal)
-  # Everything else should flow from there: ie, face_up, tossed_a_number? & black?.
+  # Everything else should flow from there: ie, face_up, & tossed_a_number?.
 
   module Cube
 
