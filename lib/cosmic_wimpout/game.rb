@@ -35,8 +35,9 @@ module CosmicWimpout
           black_cube.count_as(sun_value)
         end
 
-        numbers, symbols = unscored_cubes.partition(&:tossed_a_number?)
-        turn_points += numbers.map(&:face_up).reduce(0, :+)
+        numbers, symbols, toss_points = *score_cubes(unscored_cubes)
+
+        turn_points += toss_points
 
         if numbers.empty? # Cosmic Wimpout! End of turn.
           end_turn
@@ -58,6 +59,12 @@ module CosmicWimpout
 
         # Now toss the left-over cubes!
       end
+    end
+
+    def score_cubes(unscored_cubes)
+      numbers, symbols = unscored_cubes.partition(&:tossed_a_number?)
+      toss_points = numbers.map(&:face_up).reduce(0, :+)
+      [numbers, symbols, toss_points]
     end
 
     # end_turn
