@@ -57,9 +57,9 @@ I have something playable all along the way.
    can count it as whatever you like._
 8. **WORKS**, but it's messy as hell.
    _**Flash** If you toss three-of-a-kind, either numbers or symbols,
-   you get 10x that many points added to your turn. Examples:
+   you get 10x that many points added to your turn._ Examples:
    * If you toss [5, 10, six, six, six], earn 5 + 10 + (6 * 10) = 75 points.
-   * If you toss [10, 10, 10, six, 5], earn 5 + (10 * 10) = 105 points._
+   * If you toss [10, 10, 10, six, 5], earn 5 + (10 * 10) = 105 points.
 9. **The Futless Rule: Clear the Flash** If you toss a flash, toss the remaining
    unscored cubes (or, if you scored on all of them, toss all 5), until
    they all come up different from the value you flashed.
