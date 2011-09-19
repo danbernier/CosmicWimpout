@@ -1,5 +1,5 @@
 $LOAD_PATH << 'lib'
-require 'cosmic_wimpout'
+Dir['lib/**/*.rb'].each { |f| load f }
 
 # This entire file is just here to help with development. It's meant to be
 # loaded in irb, again and again and again.
