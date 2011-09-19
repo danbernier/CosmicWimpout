@@ -39,6 +39,8 @@ module CosmicWimpout
         elsif symbols.empty?
           unscored_cubes = @cubes
 
+        # TODO Bug? Was YMNWTBYM, w/ 0 banked points, and wasn't asked.
+        # It effectively answered 'bank the points.'
         elsif player_quits(current_player, symbols, turn_points)
           end_turn(:and_bank => turn_points)
           return
