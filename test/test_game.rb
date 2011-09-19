@@ -133,6 +133,19 @@ describe CosmicWimpout::Game do
       @achilles.points.must_equal 50 + 5 + 100 # 100 original points
     end
   end
+  describe "when the player tosses two-of-a-kind, and a sun" do
+    it "should score them 10x the points of that face, if they allocate the sun right" do
+
+      @tortoise.points = 100
+
+      # 3 2s = 2*10. The extra :two is worthless.
+      fox_the_cubes :two, :two, :six, :three, :sun
+      @tortoise.when_asked_about_the_sun { :two } # Thus giving him 3 :twos.
+      @game.take_turn
+      @tortoise.points.must_equal 20 + 100 # 100 original points
+
+    end
+  end
 
 
 
