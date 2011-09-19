@@ -10,8 +10,10 @@ describe CosmicWimpout::Game do
     @achilles = MockPlayer.new "Achilles"
     @game = CosmicWimpout::Game.new(500, @tortoise, @achilles)
 
-    # TODO make the Tortoise never re-roll, and Achilles always re-roll
-    # (That's what your tests are doing, anyway.)
+    # Tortoise never tosses - he'll slowly bank lots of points.
+    # Achilles ALWAYS tosses. Eventually, he'll lose his points each turn.
+    @tortoise.tosses_if { false }
+    @achilles.tosses_if { true }
   end
 
   describe "when played by several people" do
@@ -46,11 +48,6 @@ describe CosmicWimpout::Game do
       @tortoise.points.must_equal 135
       @tortoise.toss_decisions[0].must_equal [[:two, :two, :three], 15]
       @tortoise.toss_decisions[1].must_equal [[:four], 35]
-
-      # Achilles ALWAYS tosses. Eventually, he'll lose his points.
-      @achilles.tosses_if do |cubes, turn_points|
-        true  # Too eager!
-      end
 
       @game.take_turn
 
@@ -91,7 +88,6 @@ describe CosmicWimpout::Game do
       fox_the_cubes :two, :three, :four, :six, :sun
       was_asked = false
       @tortoise.when_asked_about_the_sun { was_asked = true; 10 }
-      @tortoise.tosses_if { false }
       @game.take_turn
       was_asked.must_equal true
     end
@@ -118,7 +114,6 @@ describe CosmicWimpout::Game do
       # TODO This will break when we introduce the flash rule.
       fox_the_cubes(5, 5, 5, 10, :two)
       @tortoise.points = 100
-      @tortoise.tosses_if { false }
 
       @game.take_turn
 
@@ -131,8 +126,6 @@ describe CosmicWimpout::Game do
       @tortoise.points = 470
       @achilles.points = 0
       fox_the_cubes(10, 10, 5, 5, :two)
-      @tortoise.tosses_if { false }
-      @achilles.tosses_if { true }
 
       @game.take_turn  # Tortoise earns 30 points: start last licks.
       @game.in_last_licks?.must_equal true
@@ -151,8 +144,6 @@ describe CosmicWimpout::Game do
       @tortoise.points = 470
       @achilles.points = 0
       fox_the_cubes(10, 10, 5, 5, :two)
-      @tortoise.tosses_if { false }
-      @achilles.tosses_if { true } # Too eager: he'll wimpout on the two.
 
       @game.over?.must_equal false
       @game.take_turn  # Tortoise earns 30 points: enter last licks
@@ -165,8 +156,6 @@ describe CosmicWimpout::Game do
       @tortoise.points = 470
       @achilles.points = 0
       fox_the_cubes(10, 10, 5, 5, :two)
-      @tortoise.tosses_if { false }
-      @achilles.tosses_if { true }
 
       def @game.announce_winner
         @winner_was_announced = true
