@@ -35,25 +35,22 @@ module CosmicWimpout
           black_cube.count_as(sun_value)
         end
 
-        numbers, symbols, toss_points = *score_cubes(unscored_cubes)
+        scored_cubes, unscored_cubes, toss_points = *score_cubes(unscored_cubes)
 
         turn_points += toss_points
 
-        if numbers.empty? # Cosmic Wimpout! End of turn.
+        if scored_cubes.empty? # Cosmic Wimpout! End of turn.
           end_turn
           return
 
-        elsif symbols.empty?
+        elsif unscored_cubes.empty?
           unscored_cubes = @cubes
 
         # TODO Bug? Was YMNWTBYM, w/ 0 banked points, and wasn't asked.
         # It effectively answered 'bank the points.'
-        elsif player_quits(current_player, symbols, turn_points)
+        elsif player_quits(current_player, unscored_cubes, turn_points)
           end_turn(:and_bank => turn_points)
           return
-
-        else
-          unscored_cubes = symbols
 
         end
 
