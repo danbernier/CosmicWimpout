@@ -51,7 +51,7 @@ module CosmicWimpout
 
       def toss(cubes)
         super(cubes)
-        puts "Tossed: #{cubes * ', '}"
+        puts "Tossed: #{cubes.sort_by(&:to_s) * ', '}"
       end
 
       def start_last_licks
@@ -76,10 +76,20 @@ module CosmicWimpout
         puts
         puts "> #{@name}, you have #{turn_points} points so far this turn."
         puts "> Do you want to toss these cubes?"
-        puts "> #{cubes * ', '}"
+        puts "> #{cubes.sort_by(&:to_s) * ', '}"
 
         answer = ask("> Toss 'em? (y, n) ")
         answer.downcase == 'y'
+      end
+
+      def pick_value_for_sun(cubes, turn_points)
+        puts
+        puts "> #{@name}, you rolled a Flaming Sun!"
+        puts "> You rolled:"
+        puts "> #{cubes.sort_by(&:to_s) * ', '}"
+
+        answer = ask("> How do you want to count the sun? (2,3,4,5,6,10) ")
+        answer.to_i
       end
 
       def ask(prompt)

@@ -53,8 +53,8 @@ I have something playable all along the way.
    the game - but first, every other player gets one last turn. Only after the
    rest of the players earn their last-licks points, can you determine who has
    the most points, and is the winner._
-7. **The Flaming Sun** if the black cube comes up with the sun, you can count
-   it as whatever you like.
+7. **DONE** _**The Flaming Sun** if the black cube comes up with the sun, you 
+   can count it as whatever you like._
 8. **Flash** If you toss three-of-a-kind, either numbers or symbols,
    you get 10x that many points added to your turn. Examples:
    * If you toss [5, 10, six, six, six], earn 5 + 10 + (6 * 10) = 75 points.

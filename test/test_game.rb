@@ -86,6 +86,17 @@ describe CosmicWimpout::Game do
     end
   end
 
+  describe "when the Flaming Sun is tossed" do
+    it "should ask the player how to count it" do
+      fox_the_cubes :two, :three, :four, :six, :sun
+      was_asked = false
+      @tortoise.when_asked_about_the_sun { was_asked = true; 10 }
+      @tortoise.tosses_if { false }
+      @game.take_turn
+      was_asked.must_equal true
+    end
+  end
+
   describe "when the player scores on all 5 cubes" do
     it "must make them re-toss all 5 cubes" do
       fox_the_cubes 5, 5, 10, 10, [:two, 10]
@@ -173,9 +184,11 @@ describe CosmicWimpout::Game do
   # (Actually, the game is unclear about how to handle a tie. I guess most
   #  players just keep going.)
 
+  # fox_the_cubes(5, 5, 10, 10, :two)
+  # fox_the_cubes(5, 5, 10, [:two, 10], :six)
   def fox_the_cubes(*vals)
     foxed_cubes = vals.map { |v| FoxedCube.new(v) }
-    cubes = @game.instance_variable_set(:@cubes, foxed_cubes)
+    @game.instance_variable_set(:@cubes, foxed_cubes)
   end
 
   class FoxedCube
@@ -188,6 +201,10 @@ describe CosmicWimpout::Game do
 
     def toss!
       @face_up = @fixed_toss_values.next
+    end
+
+    def count_as(value)
+      @face_up = value
     end
 
   end
@@ -208,6 +225,14 @@ describe CosmicWimpout::Game do
     def toss_again?(cubes, turn_points)
       @toss_decisions.push [cubes.map(&:face_up), turn_points]
       @toss_when.call(cubes, turn_points)
+    end
+
+    def pick_value_for_sun(cubes, turn_points)
+      @when_asked_about_the_sun.call(cubes, turn_points)
+    end
+
+    def when_asked_about_the_sun(&block)
+      @when_asked_about_the_sun = block
     end
 
   end

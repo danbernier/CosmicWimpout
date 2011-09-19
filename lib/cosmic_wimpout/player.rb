@@ -25,5 +25,12 @@ module CosmicWimpout
       true
     end
 
+    # If the black cube comes up on the sun, the player has to decide how to
+    # count it. Usually, the player will want it to be a 10, but not always...
+    # Just like toss_again?, subclasses of Player should override this.
+    def pick_value_for_sun(cubes, turn_points)
+      10
+    end
+
   end
 end

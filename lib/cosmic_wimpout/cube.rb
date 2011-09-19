@@ -27,11 +27,11 @@ module CosmicWimpout
       end
 
       def tossed_a_number?
-        [5, 10].include? self.face_up
+        [5, 10].include? @face_up
       end
 
-      def black? # Currently, just for irb
-        self.class.sides.include? :sun
+      def tossed_the_sun?
+        face_up == :sun
       end
     end
 
@@ -51,5 +51,9 @@ module CosmicWimpout
   class BlackCube
     include Cube
     has_sides :two, :sun, :four, 5, :six, 10
+
+    def count_as(wild_value)
+      @face_up = wild_value
+    end
   end
 end

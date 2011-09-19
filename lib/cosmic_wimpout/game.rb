@@ -29,6 +29,12 @@ module CosmicWimpout
       until unscored_cubes.empty?
         toss unscored_cubes
 
+        if unscored_cubes.any?(&:tossed_the_sun?)
+          sun_value = current_player.pick_value_for_sun(unscored_cubes, turn_points)
+          black_cube = unscored_cubes.find(&:tossed_the_sun?)
+          black_cube.count_as(sun_value)
+        end
+
         numbers, symbols = unscored_cubes.partition(&:tossed_a_number?)
         turn_points += numbers.map(&:face_up).reduce(0, :+)
 
