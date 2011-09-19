@@ -88,10 +88,53 @@ describe CosmicWimpout::Game do
       fox_the_cubes :two, :three, :four, :six, :sun
       was_asked = false
       @tortoise.when_asked_about_the_sun { was_asked = true; 10 }
+
       @game.take_turn
+
       was_asked.must_equal true
     end
   end
+
+
+
+  describe "when the player tosses three-of-a-kind" do
+    it "should score them 10x the points of that face" do
+
+      @tortoise.points = 100
+      @achilles.points = 100
+
+      # 3 5s = 5*10
+      fox_the_cubes 5, 5, 5, :two, :four
+      @game.take_turn
+      @tortoise.points.must_equal 50 + 100 # 100 original points
+
+      # 3 6s = 6*10. Yes, it works for symbols, too!
+      fox_the_cubes :six, :six, :six, 10, :four
+      @achilles.tosses_if { false } # A rare moment of caution for Achilles.
+      @game.take_turn
+      @achilles.points.must_equal 60 + 10 + 100 # 100 original points
+    end
+  end
+  describe "when the player tosses four-of-a-kind" do
+    it "should score them 10x the points of that face" do
+
+      @tortoise.points = 100
+      @achilles.points = 100
+
+      # 3 2s = 2*10. The extra :two is worthless.
+      fox_the_cubes :two, :two, :two, :two, :four
+      @game.take_turn
+      @tortoise.points.must_equal 20 + 100 # 100 original points
+
+      # 3 5s = 5*10. The extra 5 counts for 5.
+      fox_the_cubes 5, 5, 5, 5, :four
+      @achilles.tosses_if { false } # A rare moment of caution for Achilles.
+      @game.take_turn
+      @achilles.points.must_equal 50 + 5 + 100 # 100 original points
+    end
+  end
+
+
 
   describe "when the player scores on all 5 cubes" do
     it "must make them re-toss all 5 cubes" do
@@ -111,13 +154,12 @@ describe CosmicWimpout::Game do
 
   describe "when the turn ends" do
     it "should add the turn points to the current player's total" do
-      # TODO This will break when we introduce the flash rule.
-      fox_the_cubes(5, 5, 5, 10, :two)
+      fox_the_cubes(5, 5, 10, 10, :two)
       @tortoise.points = 100
 
       @game.take_turn
 
-      @tortoise.points.must_equal 125
+      @tortoise.points.must_equal 130
     end
   end
 
