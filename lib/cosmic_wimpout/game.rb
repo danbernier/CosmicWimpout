@@ -4,6 +4,8 @@ require_relative 'cube'
 module CosmicWimpout
 
   class Game
+  
+    attr_reader :players, :max_points
 
     def initialize(max_points, *players)
       @max_points = max_points
