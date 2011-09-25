@@ -8,7 +8,7 @@ describe CosmicWimpout::Game do
   before do
     @tortoise = MockPlayer.new "Tortoise"
     @achilles = MockPlayer.new "Achilles"
-    @game = CosmicWimpout::Game.new(500, @tortoise, @achilles)
+    @game = CosmicWimpout::Game.new(500, [@tortoise, @achilles])
 
     # Tortoise never tosses - he'll slowly bank lots of points.
     # Achilles ALWAYS tosses. Eventually, he'll lose his points each turn.

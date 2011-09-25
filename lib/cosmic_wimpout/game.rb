@@ -7,7 +7,7 @@ module CosmicWimpout
   
     attr_reader :players, :max_points
 
-    def initialize(max_points, *players)
+    def initialize(max_points, players)
       @max_points = max_points
       @players = players
       @cubes = Array.new(4) { WhiteCube.new } + [BlackCube.new]
