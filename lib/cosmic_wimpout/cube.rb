@@ -33,6 +33,10 @@ module CosmicWimpout
       def tossed_the_sun?
         face_up == :sun
       end
+    
+      def to_s
+        @face_up.to_s
+      end
     end
 
     def self.included(klass)
@@ -54,6 +58,10 @@ module CosmicWimpout
 
     def count_as(wild_value)
       @face_up = wild_value
+    end
+    
+    def to_s
+      "black #{super}" 
     end
   end
 end
