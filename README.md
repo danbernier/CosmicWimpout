@@ -81,54 +81,21 @@ I have something playable all along the way.
 
 ## OH WAIT, YOU WANT TO ACTUALLY PLAY IT?
 
-Now you can. Load icw.rb in irb, construct an IrbGame
-with the names of your players, and start sharing the keyboard.
+Now you can.
 
 ```
-dan@prodigal:~/projects/cosmicwimpout$ irb
-ruby-1.9.2-p180 :001 > load 'icw.rb' # That's Interactive Cosmic Wimpout, kids.
- => true
-ruby-1.9.2-p180 :002 > g = start 'Fred', 'Wilma'
- => #<IrbGame:0x8667b48 ...>
-ruby-1.9.2-p180 :003 > g.take_turn
-Fred has 0 points
-Wilma has 0 points
-Fred's turn.
-Tossed: four, three, three, six, Black four
- => nil
- (some boring turns removed...)
-ruby-1.9.2-p180 :006 > g.take_turn
-Wilma has 0 points
-Fred has 0 points
-Wilma's turn.
-Tossed: 10, 5, six, 10, Black six
-Tossed: three, Black 10
-Wilma earned 35 this turn!
- => nil
-ruby-1.9.2-p180 :007 > g.take_turn
-Fred has 0 points
-Wilma has 35 points
-Fred's turn.
-Tossed: six, four, 10, 5, Black 5
-Tossed: two, two
- => nil
-ruby-1.9.2-p180 :008 > g.take_turn
-Wilma has 35 points
-Fred has 0 points
-Wilma's turn.
-Tossed: two, six, 10, two, Black 5
+dan@prodigal:~/projects/rbmu/cosmicwimpout$ rake play
+Who's playing? (or a blank line to quit): Fred
+Wilma
 
-> Wilma, you have 15 points so far this turn.
-> Do you want to toss these cubes?
-> two, six, two
-> Toss 'em? (y, n) y
-Tossed: three, 10, 5
+What should we play to?  500
 
-> Wilma, you have 30 points so far this turn.
-> Do you want to toss these cubes?
-> three
-> Toss 'em? (y, n) n
-Wilma earned 30 this turn!
- => nil
+Fred, with 0 points, tosses the cubes...
+Tossed: 10, two, three, six, four
+Tossed: three, three, 10, sun
 
+> Fred, you rolled a Flaming Sun!
+> You rolled:
+> 10, black sun, three, three
+> How do you want to count the sun?
 ```
