@@ -1,5 +1,6 @@
 require_relative 'cosmic_wimpout/game'
-require_relative 'cosmic_wimpout/controller'
+require_relative 'cosmic_wimpout/controllers/start_controller'
+require_relative 'cosmic_wimpout/controllers/turn_controller'
 require_relative 'cosmic_wimpout/view'
 require_relative 'cosmic_wimpout/player_view'
 
