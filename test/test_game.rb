@@ -284,6 +284,19 @@ describe CosmicWimpout::Game do
       @tortoise.points.must_equal 100
     end
     
+    it 'forces the player to re-roll on YMNWTBYM' do
+      @tortoise.points = 100
+      
+      fox_the_cubes([:three, :three, :three, :six,   :two],
+                    [:three, :four,  :four,  :four,  :two],
+                    [:three, :four,  :four,  :four,  :four],
+                    [5,      :six,   :six,   :three, :six],
+                    [10,     :two,   :two,   :two,   :four])
+      
+      @game.take_turn
+      @tortoise.points.must_equal 100
+    end
+    
     
   end
 
