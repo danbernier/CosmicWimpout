@@ -48,8 +48,6 @@ module CosmicWimpout
         elsif unscored_cubes.empty?
           unscored_cubes = @cubes
 
-        # TODO Bug? Was YMNWTBYM, w/ 0 banked points, and wasn't asked.
-        # It effectively answered 'bank the points.'
         elsif player_quits(current_player, unscored_cubes, turn_points)
           end_turn(:and_bank => turn_points)
           return
@@ -156,12 +154,14 @@ module CosmicWimpout
     end
 
     def player_quits(player, cubes_to_toss, turn_points)
-      if player.points > 0
-        # If player has points banked, he can choose to stop.
-        !current_player.toss_again?(cubes_to_toss, turn_points)
+  
+      # If player has points banked, he can choose to stop.
+      # Else, he needs at least 35 points this turn to quit.
+      
+      if turn_points >= 35 || player.points > 0
+        !player.toss_again?(cubes_to_toss, turn_points)
       else
-        # Else, he needs at least 35 points this turn to quit.
-        turn_points >= 35
+        false
       end
     end
 

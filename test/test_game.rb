@@ -223,6 +223,42 @@ describe CosmicWimpout::Game do
       @game.instance_variable_get(:@winner_was_announced).must_equal true
     end
   end
+  
+  describe 'when a player has 0 banked points' do
+    it "should let a player with 35 turn points quit" do
+      @tortoise.points = 0
+      was_asked = false
+      @tortoise.tosses_if { was_asked = true; return true }
+      @game.player_quits(@tortoise, [FoxedCube.new(:two)], 35).must_equal true
+      was_asked.must_equal true
+    end
+    
+    it "should not let a player with under 35 turn points quit" do
+      @tortoise.points = 0
+      was_asked = false
+      @tortoise.tosses_if { was_asked = true; return true }
+      @game.player_quits(@tortoise, [FoxedCube.new(:two)], 30).must_equal false
+      was_asked.must_equal false
+    end
+  end
+  
+  describe 'when a player has banked points' do
+    it "should let a player with 35 turn points quit" do
+      @tortoise.points = 35
+      was_asked = false
+      @tortoise.tosses_if { was_asked = true; return true }
+      @game.player_quits(@tortoise, [FoxedCube.new(:two)], 30).must_equal true
+      was_asked.must_equal true
+    end
+    
+    it "should not let a player with under 35 turn points quit" do
+      @tortoise.points = 35
+      was_asked = false
+      @tortoise.tosses_if { was_asked = true; return true }
+      @game.player_quits(@tortoise, [FoxedCube.new(:two)], 30).must_equal true
+      was_asked.must_equal true
+    end
+  end
 
   # TODO when you get to last licks, make sure you test for a tie game.
   # (Actually, the game is unclear about how to handle a tie. I guess most
