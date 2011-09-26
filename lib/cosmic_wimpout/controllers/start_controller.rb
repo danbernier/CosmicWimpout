@@ -11,11 +11,13 @@ module CosmicWimpout
       end
       
       def initialize(deps={})
-        @view = deps[:view] || View.new
+        @view = deps[:view] || Views::StartView.new
       end
       
       def start
-        players = @view.gather_players.map { |name| PlayerView.new(name) }
+        players = @view.gather_players.map do |name|
+          Views::PlayerView.new(name)
+        end
         max_points = @view.ask_the_game_limit
         TurnController.new(Game.new(max_points, players))
       end
