@@ -158,6 +158,7 @@ module CosmicWimpout
 
     def start_last_licks
       @last_licks_remaining_turns = @players[1..-1]
+      publish(:starting_last_licks)
     end
 
     def in_last_licks?
