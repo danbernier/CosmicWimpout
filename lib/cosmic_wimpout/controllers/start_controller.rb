@@ -4,13 +4,13 @@ module CosmicWimpout
     class StartController
       
       def self.start
-        next_controller = *self.new.start
+        controller = self.new
         loop {
-          next_controller = next_controller.start
+          controller = controller.start
         }
       end
       
-      def initialize(deps)
+      def initialize(deps={})
         @view = deps[:view] || View.new
       end
       

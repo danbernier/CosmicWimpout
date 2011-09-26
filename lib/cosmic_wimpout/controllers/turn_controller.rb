@@ -8,6 +8,7 @@ module CosmicWimpout
       end
       
       def start
+        puts ':d'
       end
       
     end

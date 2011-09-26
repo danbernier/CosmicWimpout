@@ -7,7 +7,7 @@ require_relative 'cosmic_wimpout/player_view'
 module CosmicWimpout
 
   def self.start
-    Controller.start
+    Controllers::StartController.start
   end
   
 end
