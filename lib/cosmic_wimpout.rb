@@ -1,7 +1,7 @@
+require_relative 'cosmic_wimpout/publisher'
 require_relative 'cosmic_wimpout/game'
 require_relative 'cosmic_wimpout/player'
 require_relative 'cosmic_wimpout/cube'
-require_relative 'cosmic_wimpout/publisher'
 require_relative 'cosmic_wimpout/controllers/start_controller'
 require_relative 'cosmic_wimpout/controllers/turn_controller'
 require_relative 'cosmic_wimpout/views/start_view'
