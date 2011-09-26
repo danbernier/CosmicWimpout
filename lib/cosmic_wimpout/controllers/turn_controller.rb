@@ -8,7 +8,12 @@ module CosmicWimpout
       end
       
       def start
-        puts ':d'
+        if @game.over?
+          :stop
+        else
+          @game.take_turn
+          self
+        end
       end
       
     end

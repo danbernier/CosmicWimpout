@@ -5,9 +5,9 @@ module CosmicWimpout
       
       def self.start
         controller = self.new
-        loop {
+        until controller == :stop
           controller = controller.start
-        }
+        end
       end
       
       def initialize(deps={})
