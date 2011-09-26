@@ -63,8 +63,10 @@ module CosmicWimpout
 
       when_three_of_a_kind(unscored_cubes) do |flash_cubes|
 
-        flash_score = 10 * value_of_face(flash_cubes.first.face_up)
-
+        # Store it - player has to clear the flash. (See #toss.)
+        @flash = flash_cubes.first.face_up
+        flash_score = 10 * value_of_face(@flash)
+        
         return add_up_number_cubes(unscored_cubes - flash_cubes).tap do |array|
           array[2] += flash_score
           array[0] += flash_cubes
@@ -155,6 +157,9 @@ module CosmicWimpout
 
     def player_quits(player, cubes_to_toss, turn_points)
   
+      # If there's a flash on, he can NEVER quit.
+      #return false if @flash
+      
       # If player has points banked, he can choose to stop.
       # Else, he needs at least 35 points this turn to quit.
       
@@ -166,8 +171,11 @@ module CosmicWimpout
     end
 
     def toss(cubes)
-      cubes.each &:toss!
-      publish(:cubes_tossed, cubes.map(&:face_up))
+      begin
+        cubes.each &:toss!
+        publish(:cubes_tossed, cubes.map(&:face_up))
+      end while @flash && cubes.map(&:face_up).include?(@flash)
+      @flash = nil
     end
 
     def announce_winner

@@ -95,8 +95,6 @@ describe CosmicWimpout::Game do
     end
   end
 
-
-
   describe "when the player tosses three-of-a-kind" do
     it "should score them 10x the points of that face" do
 
@@ -259,6 +257,35 @@ describe CosmicWimpout::Game do
       was_asked.must_equal true
     end
   end
+  
+  describe 'when a flash was tossed' do
+    it 'should keep re-rolling until the flash is cleared' do
+    
+      @game.instance_variable_set(:@flash, :two)
+      fox_the_cubes(:three, :four, :six, 5, [:two, :two, :two, :two, :four])
+      the_cubes = @game.instance_variable_get(:@cubes)
+      
+      counting_mock = CountingMock.new
+      @game.publish_to(counting_mock)
+      
+      @game.toss(the_cubes)
+      
+      counting_mock.count.must_equal(5)
+      @game.instance_variable_get(:@flash).must_be_nil
+    end
+    
+    
+    it 'forces the player to re-roll' do
+      @tortoise.points = 100
+      
+      fox_the_cubes(:two, :two, :two, 5, [:three, :two, :two, :two, :four])
+      
+      @game.take_turn
+      @tortoise.points.must_equal 100
+    end
+    
+    
+  end
 
   # TODO when you get to last licks, make sure you test for a tie game.
   # (Actually, the game is unclear about how to handle a tie. I guess most
@@ -315,5 +342,14 @@ describe CosmicWimpout::Game do
       @when_asked_about_the_sun = block
     end
 
+  end
+  
+  class CountingMock
+    attr_reader :count
+    
+    def cubes_tossed(*args)
+      @count = (@count || 0) + 1
+    end
+    
   end
 end
