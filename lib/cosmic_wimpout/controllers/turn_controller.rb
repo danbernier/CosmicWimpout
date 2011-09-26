@@ -5,6 +5,8 @@ module CosmicWimpout
     
       def initialize(game)
         @game = game
+        @view = CosmicWimpout::Views::TurnView.new
+        @game.publish_to(@view)
       end
       
       def start

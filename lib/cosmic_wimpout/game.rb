@@ -3,7 +3,19 @@ require_relative 'cube'
 
 module CosmicWimpout
 
+  module Publisher
+    
+    def publish_to(subscriber)
+      @subscriber = subscriber
+    end
+    
+    def publish(message, *args)
+      @subscriber.send(message, *args) if @subscriber
+    end
+  end
+
   class Game
+    include Publisher
   
     attr_reader :players, :max_points
 
@@ -24,6 +36,8 @@ module CosmicWimpout
     def take_turn
 
       raise GameOverException if over?
+
+      publish(:start_turn, current_player)
 
       turn_points = 0
       unscored_cubes = @cubes
@@ -58,6 +72,7 @@ module CosmicWimpout
 
         # Now toss the left-over cubes!
       end
+      
     end
 
     def score_cubes(unscored_cubes)
@@ -113,6 +128,9 @@ module CosmicWimpout
     def end_turn(opts={})
       if opts.has_key? :and_bank
         current_player.bank_points(opts[:and_bank])
+        publish(:end_turn, current_player, opts[:and_bank])
+      else
+        publish(:end_turn, current_player, 0)
       end
 
       if should_start_last_licks?
@@ -165,7 +183,7 @@ module CosmicWimpout
     end
 
     def announce_winner
-      # Just a hook for subclasses (I know we don't really need this, but...)
+      publish(:game_over, winning_player)
     end
 
     def winning_player
@@ -176,6 +194,6 @@ module CosmicWimpout
 
   end
 
-  class GameOverException < Exception
+  class GameOverException < Exception # TODO remove GameOverException
   end
 end

@@ -20,19 +20,19 @@ describe CosmicWimpout::Controllers::TurnController do
     next_controller.must_equal :stop
     
   end
-  
-  class MockGame
-    def initialize(n)
-      @number_of_turns = n
-    end
-    
-    def over?
-      @number_of_turns == 0
-    end
-    
-    def take_turn
-      @number_of_turns -= 1
-    end
-  end
 
+end
+
+class MockGame < CosmicWimpout::Game
+  def initialize(n)
+    @number_of_turns = n
+  end
+  
+  def over?
+    @number_of_turns == 0
+  end
+  
+  def take_turn
+    @number_of_turns -= 1
+  end
 end
