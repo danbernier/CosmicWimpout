@@ -181,6 +181,7 @@ module CosmicWimpout
 
     def toss(cubes)
       cubes.each &:toss!
+      publish(:cubes_tossed, cubes.map(&:face_up))
     end
 
     def announce_winner

@@ -13,6 +13,10 @@ module CosmicWimpout
         @hl.say("\n#{player.name}, with #{player.points} points, tosses the cubes...")
       end
       
+      def cubes_tossed(cubes)
+        @hl.say("Tossed: #{cubes.map(&:to_s).join(', ')}")
+      end
+      
       def end_turn(player, points)
         @hl.say("#{player.name} banks #{points} points, for a total of #{player.points}.")
       end
