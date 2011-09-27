@@ -102,15 +102,15 @@ describe CosmicWimpout::Game do
       @achilles.points = 100
 
       # 3 5s = 5*10
-      fox_the_cubes 5, 5, 5, :two, :four
+      fox_the_cubes 5, 5, 5, :two, [:four, 10]
       @game.take_turn
-      @tortoise.points.must_equal 50 + 100 # 100 original points
+      @tortoise.points.must_equal 50 + 10 + 100 # 100 original points
 
       # 3 6s = 6*10. Yes, it works for symbols, too!
-      fox_the_cubes :six, :six, :six, 10, :four
+      fox_the_cubes :six, :six, :six, :two, [:four, 5]
       @achilles.tosses_if { false } # A rare moment of caution for Achilles.
       @game.take_turn
-      @achilles.points.must_equal 60 + 10 + 100 # 100 original points
+      @achilles.points.must_equal 60 + 5 + 100 # 100 original points
     end
   end
   describe "when the player tosses four-of-a-kind" do
@@ -120,15 +120,21 @@ describe CosmicWimpout::Game do
       @achilles.points = 100
 
       # 3 2s = 2*10. The extra :two is worthless.
-      fox_the_cubes :two, :two, :two, :two, :four
+      fox_the_cubes :two, :two, :two, [:two, 5], :four
       @game.take_turn
-      @tortoise.points.must_equal 20 + 100 # 100 original points
+      
+      # 20=flash, 5=lastcube, 100 original points
+      @tortoise.points.must_equal 20 + 5 + 100
 
       # 3 5s = 5*10. The extra 5 counts for 5.
-      fox_the_cubes 5, 5, 5, 5, :four
+      fox_the_cubes [5,         10], 
+                    [5,         :three], 
+                    [5,         :six], 
+                    [5,         :six], 
+                    [:four, 10, :two]
       @achilles.tosses_if { false } # A rare moment of caution for Achilles.
       @game.take_turn
-      @achilles.points.must_equal 50 + 5 + 100 # 100 original points
+      @achilles.points.must_equal 50 + 5 + 10 + 10 + 100 # 100 original points
     end
   end
   describe "when the player tosses two-of-a-kind, and a sun" do
@@ -136,11 +142,10 @@ describe CosmicWimpout::Game do
 
       @tortoise.points = 100
 
-      # 3 2s = 2*10. The extra :two is worthless.
-      fox_the_cubes :two, :two, :six, :three, :sun
+      fox_the_cubes :two, :two, :six, [:three, 5], :sun
       @tortoise.when_asked_about_the_sun { :two } # Thus giving him 3 :twos.
       @game.take_turn
-      @tortoise.points.must_equal 20 + 100 # 100 original points
+      @tortoise.points.must_equal 20 + 5 + 100 # 100 original points
 
     end
   end

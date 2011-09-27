@@ -6,7 +6,9 @@ module CosmicWimpout
     end
     
     def publish(message, *args)
-      @subscriber.send(message, *args) if @subscriber
+      if @subscriber && @subscriber.respond_to?(message)
+        @subscriber.send(message, *args)
+      end
     end
   end
 end
