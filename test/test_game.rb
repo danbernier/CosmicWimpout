@@ -210,20 +210,15 @@ describe CosmicWimpout::Game do
       proc { @game.take_turn }.must_raise CosmicWimpout::GameOverException
     end
 
-    it "should announce the correct winner" do
+    it "should know the correct winner" do
       @tortoise.points = 470
       @achilles.points = 0
       fox_the_cubes(10, 10, 5, 5, :two)
-
-      def @game.announce_winner
-        @winner_was_announced = true
-      end
 
       @game.winning_player.must_be_nil
       @game.take_turn  # Tortoise starts last licks
       @game.take_turn  # Achilles wimps out
       @game.winning_player.must_equal @tortoise
-      @game.instance_variable_get(:@winner_was_announced).must_equal true
     end
   end
   
