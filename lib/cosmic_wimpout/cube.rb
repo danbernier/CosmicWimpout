@@ -9,7 +9,7 @@ module CosmicWimpout
   # 2. What happens when it's tossed? (Fixed vs Normal)
   # Everything else should flow from there: ie, face_up, & tossed_a_number?.
 
-  class Cube
+  module Cube
     attr_reader :face_up
 
     def toss!
@@ -30,7 +30,8 @@ module CosmicWimpout
     
   end
 
-  class WhiteCube < Cube
+  class WhiteCube
+    include Cube
     
     def self.sides 
       [:two, :three, :four, 5, :six, 10]
@@ -38,7 +39,8 @@ module CosmicWimpout
     
   end
 
-  class BlackCube < Cube
+  class BlackCube
+    include Cube
   
     def self.sides 
       [:two, :sun, :four, 5, :six, 10]
