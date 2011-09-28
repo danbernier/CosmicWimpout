@@ -9,52 +9,40 @@ module CosmicWimpout
   # 2. What happens when it's tossed? (Fixed vs Normal)
   # Everything else should flow from there: ie, face_up, & tossed_a_number?.
 
-  module Cube
+  class Cube
+    attr_reader :face_up
 
-    module ClassMethods
-      attr_reader :sides
-
-      def has_sides(*sides)
-        @sides ||= sides
-      end
+    def toss!
+      @face_up = self.class.sides.sample
     end
 
-    module InstanceMethods
-      attr_reader :face_up
+    def tossed_a_number?
+      [5, 10].include? @face_up
+    end
 
-      def toss!
-        @face_up = self.class.sides.sample
-      end
-
-      def tossed_a_number?
-        [5, 10].include? @face_up
-      end
-
-      def tossed_the_sun?
-        face_up == :sun
-      end
+    def tossed_the_sun?
+      face_up == :sun
+    end
+  
+    def to_s
+      @face_up.to_s
+    end
     
-      def to_s
-        @face_up.to_s
-      end
-    end
-
-    def self.included(klass)
-      klass.module_eval do
-        extend  ClassMethods
-        include InstanceMethods
-      end
-    end
   end
 
-  class WhiteCube
-    include Cube
-    has_sides :two, :three, :four, 5, :six, 10
+  class WhiteCube < Cube
+    
+    def self.sides 
+      [:two, :three, :four, 5, :six, 10]
+    end
+    
   end
 
-  class BlackCube
-    include Cube
-    has_sides :two, :sun, :four, 5, :six, 10
+  class BlackCube < Cube
+  
+    def self.sides 
+      [:two, :sun, :four, 5, :six, 10]
+    end
 
     def count_as(wild_value)
       @face_up = wild_value
@@ -63,5 +51,6 @@ module CosmicWimpout
     def to_s
       "black #{super}" 
     end
+    
   end
 end

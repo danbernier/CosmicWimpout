@@ -316,8 +316,7 @@ describe CosmicWimpout::Game do
     @game.instance_variable_set(:@cubes, foxed_cubes)
   end
 
-  class FoxedCube
-    include CosmicWimpout::Cube
+  class FoxedCube < CosmicWimpout::Cube
 
     def initialize(values)
       values = [values] unless Array === values
