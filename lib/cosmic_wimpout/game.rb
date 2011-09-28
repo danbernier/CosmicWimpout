@@ -76,7 +76,13 @@ module CosmicWimpout
 
     def add_up_number_cubes(unscored_cubes)
       numbers, symbols = unscored_cubes.partition(&:tossed_a_number?)
-      toss_points = numbers.map(&:face_up).reduce(0, :+)
+      
+      if numbers.empty?
+        toss_points = 0
+      else
+        toss_points = numbers.map(&:face_up).inject(:+)
+      end
+      
       [numbers, symbols, toss_points]
     end
 
