@@ -11,7 +11,7 @@ module CosmicWimpout
       end
       
       def toss_again?(cubes, turn_points)
-        @hl.say ''
+        @hl.say "\n"
         @hl.say "> #{name}, you have #{turn_points} points this turn."
         @hl.say "> Do you want to toss these cubes?"
         @hl.say "> #{cubes.sort_by(&:to_s) * ', '}"
@@ -21,7 +21,7 @@ module CosmicWimpout
       
       def pick_value_for_sun(cubes, turn_points)
         
-        @hl.say ''
+        @hl.say "\n"
         @hl.say "> #{name}, you rolled a Flaming Sun!"
         @hl.say "> You rolled:"
         @hl.say "> #{cubes.sort_by(&:to_s) * ', '}"
