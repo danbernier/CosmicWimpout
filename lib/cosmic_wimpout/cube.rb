@@ -12,7 +12,7 @@ module CosmicWimpout
   module Cube
     attr_reader :face_up
 
-    def toss!
+    def toss
       @face_up = self.class.sides.sample
     end
 

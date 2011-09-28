@@ -318,7 +318,7 @@ describe CosmicWimpout::Game do
       @fixed_toss_values = values.cycle
     end
 
-    def toss!
+    def toss
       @face_up = @fixed_toss_values.next
     end
 

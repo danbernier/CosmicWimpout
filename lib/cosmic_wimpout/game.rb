@@ -185,11 +185,11 @@ module CosmicWimpout
     end
 
     def toss(cubes)
-      cubes.each &:toss!
+      cubes.each &:toss
       publish(:cubes_tossed, cubes.map(&:face_up))
       
       while flash? && cubes.map(&:face_up).include?(@flash)
-        cubes.each &:toss!
+        cubes.each &:toss
         publish(:cubes_tossed, cubes.map(&:face_up))
       end
       
