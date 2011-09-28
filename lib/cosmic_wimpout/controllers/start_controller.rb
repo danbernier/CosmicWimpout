@@ -5,10 +5,15 @@ module CosmicWimpout
       
       def self.start
         controller = self.new
-        until controller == :stop
-          controller = controller.start
+        
+        controller.start
+        
+        until controller.over?
+          controller.take_turn
         end
       end
+      
+      attr_reader :game
       
       def initialize(deps={})
         @view = deps[:view] || Views::StartView.new
@@ -19,7 +24,18 @@ module CosmicWimpout
           Views::PlayerView.new(name)
         end
         max_points = @view.ask_the_game_limit
-        TurnController.new(Game.new(max_points, players))
+        @game = Game.new(max_points, players)
+        
+        @view = CosmicWimpout::Views::TurnView.new
+        @game.publish_to(@view)
+      end
+      
+      def over?
+        @game.over?
+      end
+      
+      def take_turn
+        @game.take_turn
       end
       
     end

@@ -13,12 +13,10 @@ describe CosmicWimpout::Controllers::StartController do
     view.expect(:ask_the_game_limit, 750)
     
     controller = Controllers::StartController.new(view: view)
-    next_controller = controller.start
+    controller.start
     
-    game = next_controller.instance_variable_get(:@game)
-    game.players.map(&:name).must_equal ['Tortoise', 'Achilles']
-    game.max_points.must_equal 750
+    controller.game.players.map(&:name).must_equal ['Tortoise', 'Achilles']
+    controller.game.max_points.must_equal 750
     
   end
-
 end
