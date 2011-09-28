@@ -16,19 +16,20 @@ module CosmicWimpout
       attr_reader :game
       
       def initialize(deps={})
-        @view = deps[:view] || Views::StartView.new
+        @start_view = deps[:view] || Views::StartView.new
       end
       
       def start
-        players = @view.gather_players.map do |name|
+      
+        players = @start_view.gather_players.map do |name|
           Views::PlayerView.new(name)
         end
-        max_points = @view.ask_the_game_limit
-        @game = Game.new(max_points, players)
         
-        @view = CosmicWimpout::Views::TurnView.new
-        @game.publish_to(@view)
+        max_points = @start_view.ask_the_game_limit
+        
+        @game = Game.new(max_points, players, CosmicWimpout::Views::TurnView.new)
       end
+      
       
       def over?
         @game.over?

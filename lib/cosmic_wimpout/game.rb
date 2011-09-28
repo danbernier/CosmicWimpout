@@ -1,13 +1,13 @@
 module CosmicWimpout
 
   class Game
-    include Publisher
   
-    attr_reader :players, :max_points, :cubes
+    attr_reader :players, :max_points, :cubes, :turn_view
 
-    def initialize(max_points, players)
+    def initialize(max_points, players, turn_view)
       @max_points = max_points
       @players = players
+      @turn_view = turn_view
       @cubes = Array.new(4) { WhiteCube.new } + [BlackCube.new]
     end
 
@@ -23,7 +23,7 @@ module CosmicWimpout
 
       raise GameOverException if over?
 
-      publish(:start_turn, current_player)
+      turn_view.start_turn(current_player)
 
       turn_points = 0
       unscored_cubes = @cubes
@@ -126,9 +126,9 @@ module CosmicWimpout
     def end_turn(opts={})
       if opts.has_key? :and_bank
         current_player.bank_points(opts[:and_bank])
-        publish(:end_turn, current_player, opts[:and_bank])
+        turn_view.end_turn(current_player, opts[:and_bank])
       else
-        publish(:end_turn, current_player, 0)
+        turn_view.end_turn(current_player, 0)
       end
 
       if should_start_last_licks?
@@ -156,7 +156,7 @@ module CosmicWimpout
 
     def start_last_licks
       @last_licks_remaining_turns = @players[1..-1]
-      publish(:starting_last_licks)
+      turn_view.starting_last_licks
     end
 
     def in_last_licks?
@@ -186,18 +186,18 @@ module CosmicWimpout
 
     def toss(cubes)
       cubes.each &:toss
-      publish(:cubes_tossed, cubes.map(&:face_up))
+      turn_view.cubes_tossed(cubes.map(&:face_up))
       
       while flash? && cubes.map(&:face_up).include?(@flash)
         cubes.each &:toss
-        publish(:cubes_tossed, cubes.map(&:face_up))
+        turn_view.cubes_tossed(cubes.map(&:face_up))
       end
       
       @flash = nil
     end
 
     def announce_winner
-      publish(:game_over, winning_player)
+      turn_view.game_over(winning_player)
     end
 
     def winning_player
