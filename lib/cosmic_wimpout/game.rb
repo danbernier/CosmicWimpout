@@ -32,7 +32,7 @@ module CosmicWimpout
         toss unscored_cubes
 
         if unscored_cubes.any?(&:tossed_the_sun?)
-          sun_value = current_player.pick_value_for_sun(unscored_cubes, turn_points)
+          sun_value = player_picks_sun(unscored_cubes, turn_points)
           black_cube = unscored_cubes.find(&:tossed_the_sun?)
           black_cube.count_as(sun_value)
         end
@@ -57,6 +57,10 @@ module CosmicWimpout
         # Now toss the left-over cubes!
       end
       
+    end
+    
+    def player_picks_sun(unscored_cubes, turn_points)
+      current_player.pick_value_for_sun(unscored_cubes, turn_points)
     end
 
     def score_cubes(unscored_cubes)
