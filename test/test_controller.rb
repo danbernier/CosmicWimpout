@@ -2,9 +2,7 @@ require 'minitest/autorun'
 require 'minitest/mock'
 require 'cosmic_wimpout'
 
-describe CosmicWimpout::Controllers::StartController do
-
-  include CosmicWimpout
+describe CosmicWimpout::Controller do
 
   it "should start the game" do
   
@@ -12,7 +10,7 @@ describe CosmicWimpout::Controllers::StartController do
     view.expect(:gather_players, %w[Tortoise Achilles])
     view.expect(:ask_the_game_limit, 750)
     
-    controller = Controllers::StartController.new(view: view)
+    controller = CosmicWimpout::Controller.new(view: view)
     controller.start
     
     controller.game.players.map(&:name).must_equal ['Tortoise', 'Achilles']
