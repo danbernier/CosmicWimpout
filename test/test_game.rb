@@ -268,15 +268,14 @@ describe CosmicWimpout::Game do
     
       @game.instance_variable_set(:@flash, :two)
       fox_the_cubes(:three, :four, :six, 5, [:two, :two, :two, :two, :four])
-      the_cubes = @game.instance_variable_get(:@cubes)
       
       counting_mock = CountingMock.new
       @game.publish_to(counting_mock)
       
-      @game.toss(the_cubes)
+      @game.toss(@game.cubes)
       
       counting_mock.count.must_equal(5)
-      @game.instance_variable_get(:@flash).must_be_nil
+      @game.flash?.must_equal false
     end
     
     

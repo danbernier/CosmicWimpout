@@ -3,7 +3,7 @@ module CosmicWimpout
   class Game
     include Publisher
   
-    attr_reader :players, :max_points
+    attr_reader :players, :max_points, :cubes
 
     def initialize(max_points, players)
       @max_points = max_points
@@ -162,9 +162,13 @@ module CosmicWimpout
     def over?
       !@last_licks_remaining_turns.nil? && @last_licks_remaining_turns.empty?
     end
+    
+    def flash?
+      !@flash.nil?
+    end
 
     def player_quits(player, cubes_to_toss, turn_points)
-      return false if @flash
+      return false if flash?
       
       # If player has points banked, he can choose to stop.
       # Else, he needs at least 35 points this turn to quit.
@@ -180,7 +184,7 @@ module CosmicWimpout
       cubes.each &:toss!
       publish(:cubes_tossed, cubes.map(&:face_up))
       
-      while !@flash.nil? && cubes.map(&:face_up).include?(@flash)
+      while flash? && cubes.map(&:face_up).include?(@flash)
         cubes.each &:toss!
         publish(:cubes_tossed, cubes.map(&:face_up))
       end
