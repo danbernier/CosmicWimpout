@@ -21,7 +21,7 @@ module CosmicWimpout
 
     def take_turn
 
-      raise GameOverException if over?
+      raise 'Game is already over!' if over?
 
       turn_view.start_turn(current_player)
 
@@ -206,8 +206,5 @@ module CosmicWimpout
       end
     end
 
-  end
-
-  class GameOverException < Exception # TODO remove GameOverException
   end
 end

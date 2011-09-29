@@ -207,7 +207,7 @@ describe CosmicWimpout::Game do
       @game.take_turn  # Tortoise earns 30 points: enter last licks
       @game.take_turn  # Achilles wimps out, ending the game.
       @game.over?.must_equal true
-      proc { @game.take_turn }.must_raise CosmicWimpout::GameOverException
+      proc { @game.take_turn }.must_raise RuntimeError
     end
 
     it "should know the correct winner" do
