@@ -260,13 +260,12 @@ describe CosmicWimpout::Game do
   
   describe 'when a flash was tossed' do
     it 'should keep re-rolling until the flash is cleared' do
-      skip "This is a pretty sketchy test anyway - fix it, or kill it, later."
     
       @game.instance_variable_set(:@flash, :two)
       fox_the_cubes(:three, :four, :six, 5, [:two, :two, :two, :two, :four])
       
       counting_mock = CountingMock.new
-      @game.publish_to(counting_mock)
+      @game.instance_variable_set(:@turn_view, counting_mock)
       
       @game.toss(@game.cubes)
       
