@@ -183,17 +183,16 @@ describe CosmicWimpout::Game do
     it "should enter last-licks" do
       @tortoise.points = 470
       @achilles.points = 0
-      fox_the_cubes(10, 10, 5, 5, :two)
 
-      @game.take_turn  # Tortoise earns 30 points: start last licks.
+      @game.end_turn(and_bank: 30)  # Tortoise earns 30 points: enter last licks
       @game.in_last_licks?.must_equal true
       @game.over?.must_equal false
-      @game.take_turn  # Achilles' turn: he earns 0 points.
+      
+      @game.end_turn  # Achilles' turn: he earns 0 points.
 
       # With no other players, and Achilles' turn over, the game is over.
       @game.over?.must_equal true
       @game.in_last_licks?.must_equal false
-      @game.winning_player.must_equal @tortoise
     end
   end
 
@@ -201,23 +200,19 @@ describe CosmicWimpout::Game do
     it "should not let anyone take a turn" do
       @tortoise.points = 470
       @achilles.points = 0
-      fox_the_cubes(10, 10, 5, 5, :two)
 
-      @game.over?.must_equal false
-      @game.take_turn  # Tortoise earns 30 points: enter last licks
-      @game.take_turn  # Achilles wimps out, ending the game.
-      @game.over?.must_equal true
+      @game.end_turn(and_bank: 30)  # Tortoise earns 30 points: enter last licks
+      @game.end_turn  # Achilles wimps out, ending the game.
       proc { @game.take_turn }.must_raise RuntimeError
     end
 
     it "should know the correct winner" do
       @tortoise.points = 470
       @achilles.points = 0
-      fox_the_cubes(10, 10, 5, 5, :two)
 
       @game.winning_player.must_be_nil
-      @game.take_turn  # Tortoise starts last licks
-      @game.take_turn  # Achilles wimps out
+      @game.end_turn(and_bank: 30)  # Tortoise starts last licks
+      @game.end_turn  # Achilles wimps out
       @game.winning_player.must_equal @tortoise
     end
   end
