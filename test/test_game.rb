@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'cosmic_wimpout'
+require 'helper'
 
 # minitest info: http://bfts.rubyforge.org/minitest/
 
@@ -191,24 +190,6 @@ describe CosmicWimpout::Game do
   def fox_the_cubes(*vals)
     foxed_cubes = vals.map { |v| FoxedCube.new(v) }
     @game.instance_variable_set(:@cubes, foxed_cubes)
-  end
-
-  class FoxedCube
-    include CosmicWimpout::Cube
-
-    def initialize(values)
-      values = [values] unless Array === values
-      @fixed_toss_values = values.cycle
-    end
-
-    def toss
-      @face_up = @fixed_toss_values.next
-    end
-
-    def count_as(value)
-      @face_up = value
-    end
-
   end
 
   class MockPlayer < CosmicWimpout::Player

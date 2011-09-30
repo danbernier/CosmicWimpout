@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'cosmic_wimpout'
+require 'helper'
 
 module FixedCube
   def initialize(face)
