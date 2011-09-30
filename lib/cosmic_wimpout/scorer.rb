@@ -71,7 +71,7 @@ module CosmicWimpout
     
   end
   
-  # TODO check for a sun, & handle it as a 5oak
+  # TODO check for a sun, & prompt the player!
   class FourOfAKind < TossScorer
   
     def can_score?(toss)
@@ -127,15 +127,32 @@ module CosmicWimpout
     
   end
   
-  class NumbersButNoMagic < TossScorer
-    
+  class OrdinaryTossPlusSun < TossScorer
+  
     def can_score?(toss)
-      toss.has_numbers?
+      toss.has_sun?
     end
     
     def score(toss)
-      points, symbol_cubes = *add_up_numbers(toss.cubes)
-      Points.new(points: points, remaining: sort(symbol_cubes))
+      toss.count_sun_as @game.ask_how_to_count_sun(toss.cubes)
+      OrdinaryToss.new(@game).score(toss)
+    end
+    
+  end
+  
+  class OrdinaryToss < TossScorer
+    
+    def can_score?(toss)
+      true
+    end
+    
+    def score(toss)
+      if toss.has_numbers?
+        points, symbol_cubes = *add_up_numbers(toss.cubes)
+        Points.new(points: points, remaining: sort(symbol_cubes))
+      else
+        :wimpout
+      end
     end
     
   end
@@ -144,7 +161,7 @@ module CosmicWimpout
   class Scorer
   
     TOSS_SCORERS = [FiveOfAKind, FourOfAKind, ThreeOfAKind, 
-        PairsWithSun, NumbersButNoMagic]
+        PairsWithSun, OrdinaryTossPlusSun, OrdinaryToss]
   
     def score(cubes, game)
       toss_scorers = TOSS_SCORERS.map { |ts| ts.new(game) }
@@ -153,8 +170,6 @@ module CosmicWimpout
       
       toss_scorer = toss_scorers.find { |ts| ts.can_score? toss }
       return toss_scorer.score(toss) unless toss_scorer.nil?
-      
-      :wimpout
     end
   
   end

@@ -42,6 +42,15 @@ class MockGame < CosmicWimpout::Game
     @calls << faces
     faces.sort_by(&:to_s).first
   end
+  
+  def sun=(value)
+    @sun = [value]
+  end
+  
+  def ask_how_to_count_sun(cubes)
+    @sun.pop
+  end
+  
 end
 
 class TestScorer < MiniTest::Unit::TestCase
@@ -146,6 +155,25 @@ class TestScorer < MiniTest::Unit::TestCase
           score(pair(:three), :sun, 10)
     assert_equal Flash.new(points: 30, face: :three, remaining: []), 
           score(pair(:three), :sun)
+  end
+  
+  def test_stuff_with_sun
+    
+    @game.sun = 10
+    points = score(:two, 5, 10, :sun, :six)
+    assert_equal Points, points.class
+    assert_equal 25, points.points
+    assert_equal [:six, :two], points.remaining.map(&:face_up)
+    
+    @game.sun = 10
+    points = score(:sun, :two, :three)
+    assert_equal Points, points.class
+    assert_equal 10, points.points
+    assert_equal [:three, :two], points.remaining.map(&:face_up)
+    
+    @game.sun = :four
+    assert_equal :wimpout, score(:sun, :two, :three)
+    
   end
   
   def test_scored_numbers

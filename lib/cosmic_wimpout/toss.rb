@@ -14,6 +14,12 @@ module CosmicWimpout
       faces.include? :sun
     end
     
+    def count_sun_as(new_face)
+      if has_sun?
+        cubes.find { |c| c.face_up == :sun }.count_as(new_face)
+      end
+    end
+    
     def has_numbers?
       filter_out([:two, :three, :four, :six, :sun]).size > 0
     end

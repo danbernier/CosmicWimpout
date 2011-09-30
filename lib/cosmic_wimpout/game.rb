@@ -145,6 +145,7 @@ module CosmicWimpout
       cubes.each &:toss
       turn_view.cubes_tossed(cubes.map(&:face_up))
       
+      # TODO What if a sun is tossed? Shouldn't we let the player pick it?
       while flash? && cubes.map(&:face_up).include?(@flash)
         cubes.each &:toss
         turn_view.cubes_tossed(cubes.map(&:face_up))
