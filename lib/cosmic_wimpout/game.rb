@@ -74,8 +74,8 @@ module CosmicWimpout
     end
     
     def too_many_points
-      # TODO  add to the view
-      puts "TOO Many points! #{current_player} is out of the game."
+      ejected_player = @players.delete(current_player)
+      turn_view.too_many_points(ejected_player)
     end
     
     def instant_winner

@@ -28,6 +28,10 @@ module CosmicWimpout
       def starting_last_licks
         @hl.say("\nStarting last licks!")
       end
+      
+      def too_many_points(player)
+        @hl.say "TOO Many points! #{player.name} is out of the game."
+      end
     
     end
 

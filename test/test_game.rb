@@ -197,6 +197,21 @@ describe CosmicWimpout::Game do
     
     
   end
+  
+  
+  
+  describe "when a player rolls Too Many Points" do
+    it "kicks them out of the game" do
+      players = %w[Tortoise Achilles Douglas].map { |n| MockPlayer.new(n) }
+      
+      game = CosmicWimpout::Game.new(500, players, SilentTurnView.new)
+      
+      game.take_turn(scorer: FixedScorer.new(:too_many_points))
+      
+      game.players.map(&:name).must_equal %w[Achilles Douglas]
+    end
+  end
+  
 
   # TODO when you get to last licks, make sure you test for a tie game.
   # (Actually, the game is unclear about how to handle a tie. I guess most
@@ -278,6 +293,9 @@ describe CosmicWimpout::Game do
     end
     
     def starting_last_licks
+    end
+      
+    def too_many_points(player)
     end
   end
   
