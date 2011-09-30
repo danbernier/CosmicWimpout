@@ -147,7 +147,6 @@ module CosmicWimpout
         PairsWithSun, NumbersButNoMagic]
   
     def score(cubes, game)
-    
       toss_scorers = TOSS_SCORERS.map { |ts| ts.new(game) }
       
       toss = Toss.new(cubes)
@@ -156,9 +155,7 @@ module CosmicWimpout
       return toss_scorer.score(toss) unless toss_scorer.nil?
       
       :wimpout
-      
     end
   
   end
-
 end

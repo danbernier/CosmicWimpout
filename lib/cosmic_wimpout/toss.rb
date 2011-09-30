@@ -1,5 +1,4 @@
 module CosmicWimpout
-
   class Toss
     attr_reader :cubes
     
@@ -30,5 +29,4 @@ module CosmicWimpout
     end
     
   end
-
 end

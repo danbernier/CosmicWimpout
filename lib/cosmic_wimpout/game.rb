@@ -101,9 +101,7 @@ module CosmicWimpout
       end
     end
 
-    def move_to_next_player
-    
-      # TODO clean this up
+    def move_to_next_player   # TODO clean this up
       if !in_last_licks? && @players.any? { |player| player.points >= @max_points }
         
         @last_licks_remaining_turns = @players[1..-1]
@@ -115,7 +113,6 @@ module CosmicWimpout
       else
         @players.rotate!
       end
-      
     end
 
     def in_last_licks?
@@ -124,9 +121,7 @@ module CosmicWimpout
 
     def over?
       !@instant_winner.nil? || @only_one_player_left ||
-      (
-      !@last_licks_remaining_turns.nil? && @last_licks_remaining_turns.empty?
-      )
+      (!@last_licks_remaining_turns.nil? && @last_licks_remaining_turns.empty?)
     end
     
     def flash?

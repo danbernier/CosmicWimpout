@@ -1,5 +1,4 @@
 module CosmicWimpout
-
   class Controller
     
     def self.start
@@ -19,7 +18,6 @@ module CosmicWimpout
     end
     
     def start
-    
       players = @start_view.gather_players.map do |name|
         Views::PlayerView.new(name)
       end
@@ -28,7 +26,6 @@ module CosmicWimpout
       
       @game = Game.new(max_points, players, CosmicWimpout::Views::TurnView.new)
     end
-    
     
     def over?
       @game.over?
@@ -39,5 +36,4 @@ module CosmicWimpout
     end
     
   end
-  
 end
