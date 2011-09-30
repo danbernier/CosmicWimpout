@@ -8,37 +8,6 @@ module CosmicWimpout
   class TwoPairWithSun < OpenStruct; end
   class PairWithSun < OpenStruct; end
   
-  class Toss
-    attr_reader :cubes
-    
-    def initialize(cubes)
-      @cubes = cubes
-    end
-    
-    def faces
-      @cubes.map(&:face_up)
-    end
-    
-    def includes_sun?
-      faces.include? :sun
-    end
-    
-    def has_numbers?
-      filter_out([:two, :three, :four, :six, :sun]).size > 0
-    end
-    
-    def groups_of_size(n)
-      counts = cubes.group_by(&:face_up).map { |face, cubes| [face, cubes.size] }
-      counts.select { |face, count| count == n }.map(&:first)
-    end
-    
-    def filter_out(values)
-      values = Array(values)
-      cubes.reject { |cube| values.include? cube.face_up }
-    end
-    
-  end
-  
   class TossScorer
   
     def initialize(game)
@@ -137,7 +106,7 @@ module CosmicWimpout
   class PairsWithSun < TossScorer
     
     def can_score?(toss)
-      if toss.includes_sun?
+      if toss.has_sun?
         @pairs = toss.groups_of_size(2)
         !@pairs.empty?
       end
@@ -171,6 +140,7 @@ module CosmicWimpout
     
   end
   
+  # TODO Scorer is basically a namespace. Where should its stuff go?
   class Scorer
   
     TOSS_SCORERS = [FiveOfAKind, FourOfAKind, ThreeOfAKind, 
