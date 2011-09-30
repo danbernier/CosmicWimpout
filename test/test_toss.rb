@@ -1,6 +1,4 @@
-require 'minitest/autorun'
-require 'minitest/mock'
-require 'cosmic_wimpout'
+require 'test_helper'
 
 describe CosmicWimpout::Toss do
 

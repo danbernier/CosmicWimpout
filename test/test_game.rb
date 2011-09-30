@@ -1,4 +1,4 @@
-require 'helper'
+require 'test_helper'
 
 # minitest info: http://bfts.rubyforge.org/minitest/
 
