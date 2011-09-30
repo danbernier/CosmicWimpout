@@ -19,7 +19,7 @@ module CosmicWimpout
       end
     end
 
-    def take_turn(deps={})
+    def take_turn(scorer=Scorer.new)
 
       raise 'Game is already over!' if over?
 
@@ -31,7 +31,6 @@ module CosmicWimpout
       until unscored_cubes.empty?
         toss unscored_cubes
 
-        scorer = deps[:scorer] || Scorer.new
         score = scorer.score(unscored_cubes, self)
 
         case score

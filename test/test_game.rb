@@ -48,7 +48,7 @@ describe CosmicWimpout::Game do
   describe "when player wimps out" do
     it "should end the turn immediately, with 0 points" do
       
-      @game.take_turn(scorer: FixedScorer.new(:wimpout))
+      @game.take_turn(FixedScorer.new(:wimpout))
 
       @tortoise.points.must_equal 0
       @tortoise.toss_decisions.size.must_equal 0
@@ -162,7 +162,7 @@ describe CosmicWimpout::Game do
       
       game = CosmicWimpout::Game.new(500, players, SilentTurnView.new)
       
-      game.take_turn(scorer: FixedScorer.new(:too_many_points))
+      game.take_turn(FixedScorer.new(:too_many_points))
       
       game.players.map(&:name).must_equal %w[Achilles Douglas]
     end
@@ -172,7 +172,7 @@ describe CosmicWimpout::Game do
       
       game = CosmicWimpout::Game.new(500, players, SilentTurnView.new)
       
-      game.take_turn(scorer: FixedScorer.new(:too_many_points))
+      game.take_turn(FixedScorer.new(:too_many_points))
       
       game.players.map(&:name).must_equal %w[Achilles]
       

@@ -14,8 +14,8 @@ module CosmicWimpout
     
     attr_reader :game
     
-    def initialize(deps={})
-      @start_view = deps[:view] || Views::StartView.new
+    def initialize(view=Views::StartView.new)
+      @start_view = view
     end
     
     def start

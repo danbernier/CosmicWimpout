@@ -8,7 +8,7 @@ describe CosmicWimpout::Controller do
     view.expect(:gather_players, %w[Tortoise Achilles])
     view.expect(:ask_the_game_limit, 750)
     
-    controller = CosmicWimpout::Controller.new(view: view)
+    controller = CosmicWimpout::Controller.new(view)
     controller.start
     
     controller.game.players.map(&:name).must_equal ['Tortoise', 'Achilles']
