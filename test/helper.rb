@@ -7,6 +7,7 @@ class FoxedCube
   def initialize(values)
     values = [values] unless Array === values
     @fixed_toss_values = values.cycle
+    @face_up = values.first
   end
 
   def toss
