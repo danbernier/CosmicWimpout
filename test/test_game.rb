@@ -157,49 +157,6 @@ describe CosmicWimpout::Game do
     end
   end
   
-  describe 'when a flash was tossed' do
-    it 'should keep re-rolling until the flash is cleared' do
-    
-      @game.instance_variable_set(:@flash, :two)
-      fox_the_cubes(:three, :four, :six, 5, [:two, :two, :two, :two, :four])
-      
-      counting_mock = CountingMock.new
-      @game.instance_variable_set(:@turn_view, counting_mock)
-      
-      @game.toss(@game.cubes)
-      
-      counting_mock.count.must_equal(5)
-      @game.flash?.must_equal false
-    end
-    
-    
-    it 'forces the player to re-roll' do
-      @tortoise.points = 100
-      
-      fox_the_cubes(:two, :two, :two, 5, [:three, :two, :two, :two, :four])
-      
-      @game.take_turn
-      @tortoise.points.must_equal 100
-    end
-    
-    it 'forces the player to re-roll on YMNWTBYM' do
-      @tortoise.points = 100
-      
-      fox_the_cubes([:three, :three, :three, :six,   :two],
-                    [:three, :four,  :four,  :four,  :two],
-                    [:three, :four,  :four,  :four,  :four],
-                    [5,      :six,   :six,   :three, :six],
-                    [10,     :two,   :two,   :two,   :four])
-      
-      @game.take_turn
-      @tortoise.points.must_equal 100
-    end
-    
-    
-  end
-  
-  
-  
   describe "when a player rolls Too Many Points" do
     it "kicks them out of the game" do
       players = %w[Tortoise Achilles Douglas].map { |n| MockPlayer.new(n) }
