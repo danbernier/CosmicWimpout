@@ -9,6 +9,7 @@ module CosmicWimpout
       @players = players
       @turn_view = turn_view
       @cubes = Array.new(4) { WhiteCube.new } + [BlackCube.new]
+      @scorer = Scorer.new
     end
 
     def current_player
@@ -31,6 +32,38 @@ module CosmicWimpout
       until unscored_cubes.empty?
         toss unscored_cubes
 
+      new_scorers = true
+      if new_scorers
+        score = @scorer.score(unscored_cubes, self)
+        p score
+
+        case score
+          when :too_many_points
+            too_many_points
+            return
+          when :instant_winner
+            instant_winner
+            return
+          when :wimpout
+            end_turn
+            return
+          when FreightTrain
+            turn_points += score.points
+            unscored_cubes = @cubes
+          when Flash
+            turn_points += score.points
+            @flash = score.face # TODO rename that to flash
+            unscored_cubes = score.remaining
+            
+          when Points
+            turn_points += score.points
+            unscored_cubes = score.remaining
+        end
+        
+        unscored_cubes = @cubes if unscored_cubes.empty?
+        
+        
+      else
         if unscored_cubes.any?(&:tossed_the_sun?)
           sun_value = player_picks_sun(unscored_cubes, turn_points)
           black_cube = unscored_cubes.find(&:tossed_the_sun?)
@@ -53,10 +86,26 @@ module CosmicWimpout
           return
 
         end
+      end
 
         # Now toss the left-over cubes!
       end
       
+    end
+    
+    def ask_which_flash_to_complete(pair_faces)
+      turn_view.ask_which_flash_to_complete(pair_faces)
+    end
+    
+    def too_many_points
+      # TODO  add to the view
+      puts "TOO Many points! #{current_player} is out of the game."
+    end
+    
+    def instant_winner
+      # TODO  add to the view
+      puts "Instant Winner! #{current_player} just won the game."
+      @we_had_an_instant_winner = true
     end
     
     def player_picks_sun(unscored_cubes, turn_points)
@@ -164,7 +213,10 @@ module CosmicWimpout
     end
 
     def over?
+      @we_had_an_instant_winner ||
+      (
       !@last_licks_remaining_turns.nil? && @last_licks_remaining_turns.empty?
+      )
     end
     
     def flash?
