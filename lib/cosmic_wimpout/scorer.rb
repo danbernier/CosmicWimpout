@@ -74,6 +74,7 @@ module CosmicWimpout
       [number_cubes.map(&:face_up).inject(0, :+), symbol_cubes]
     end
     
+    # TODO this is copied from Toss#filter_out, but it takes the cubes param.
     def filter_out(cubes, values)
       values = Array(values)
       cubes.reject { |cube| values.include? cube.face_up }
