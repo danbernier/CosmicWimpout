@@ -239,15 +239,6 @@ describe CosmicWimpout::Game do
 
   end
   
-  class CountingMock
-    attr_reader :count
-    
-    def cubes_tossed(*args)
-      @count = (@count || 0) + 1
-    end
-    
-  end
-  
   class SilentTurnView
     def start_turn(player)
     end
