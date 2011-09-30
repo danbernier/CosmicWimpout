@@ -8,32 +8,37 @@ module CosmicWimpout
   class TwoPairWithSun < OpenStruct; end
   class PairWithSun < OpenStruct; end
   
-  class TossScorer
+  class Toss
     attr_reader :cubes
     
-    def initialize(cubes, game)
+    def initialize(cubes)
       @cubes = cubes
-      @game = game
     end
     
     def faces
       @cubes.map(&:face_up)
     end
     
-    # TODO i could add five_of_a_kind, four_of_a_kind, etc, and have them call    
-    # groups_of_size, and pop the first off - that might help
-    def groups_of_size(n, cubes)
+    def includes_sun?
+      faces.include? :sun
+    end
+    
+    def groups_of_size(n)
       counts = cubes.group_by(&:face_up).map { |face, cubes| [face, cubes.size] }
       counts.select { |face, count| count == n }.map(&:first)
     end
     
-    def filter(cubes, values)
+    def filter_out(values)
       values = Array(values)
       cubes.reject { |cube| values.include? cube.face_up }
     end
     
-    def sort(cubes)
-      cubes.sort_by { |cube| cube.face_up.to_s }
+  end
+  
+  class TossScorer
+  
+    def initialize(game)
+      @game = game
     end
     
     def flash(flash_face, other_cubes)
@@ -45,11 +50,8 @@ module CosmicWimpout
                 remaining: sort(symbol_cubes))
     end
     
-    def add_up_numbers(cubes)
-      symbol_cubes = filter(cubes, [5, 10])
-      number_cubes = cubes - symbol_cubes
-      
-      [number_cubes.map(&:face_up).inject(0, :+), symbol_cubes]
+    def sort(cubes)
+      cubes.sort_by { |cube| cube.face_up.to_s }
     end
 
     # TODO This kind of thing makes me wonder whether we should kill the symbols.
@@ -63,16 +65,28 @@ module CosmicWimpout
       end
     end
     
+    def add_up_numbers(cubes)
+      symbol_cubes = filter_out(cubes, [5, 10])
+      number_cubes = cubes - symbol_cubes
+      
+      [number_cubes.map(&:face_up).inject(0, :+), symbol_cubes]
+    end
+    
+    def filter_out(cubes, values)
+      values = Array(values)
+      cubes.reject { |cube| values.include? cube.face_up }
+    end
+    
   end
   
   class FiveOfAKind < TossScorer
   
-    def can_score?
-      @five_of_a_kind = groups_of_size(5, cubes).first
+    def can_score?(toss)
+      @five_of_a_kind = toss.groups_of_size(5).first
       !@five_of_a_kind.nil?
     end
     
-    def score
+    def score(toss)
       case @five_of_a_kind
         when 10
           :too_many_points
@@ -88,16 +102,17 @@ module CosmicWimpout
   # TODO check for a sun, & handle it as a 5oak
   class FourOfAKind < TossScorer
   
-    def can_score?
-      @four_of_a_kind = groups_of_size(4, cubes).first
+    def can_score?(toss)
+      @four_of_a_kind = toss.groups_of_size(4).first
       !@four_of_a_kind.nil?
     end
     
-    def score
+    def score(toss)
       # TODO auto-exclude the black, if it's in there, and a symbol. Be nice.
-      four_of_a_kind_cube = cubes.select { |c| c.face_up == @four_of_a_kind }.first
+      four_of_a_kind_cube = toss.cubes.
+                      select { |c| c.face_up == @four_of_a_kind }.first
       
-      other_cube = filter(cubes, @four_of_a_kind)
+      other_cube = toss.filter_out(@four_of_a_kind)
       flash(@four_of_a_kind, other_cube + [four_of_a_kind_cube])
     end
     
@@ -105,29 +120,29 @@ module CosmicWimpout
   
   class ThreeOfAKind < TossScorer
   
-    def can_score?
-      @three_of_a_kind = groups_of_size(3, cubes).first
+    def can_score?(toss)
+      @three_of_a_kind = toss.groups_of_size(3).first
       !@three_of_a_kind.nil?
     end
     
-    def score
-      flash(@three_of_a_kind, filter(cubes, @three_of_a_kind))
+    def score(toss)
+      flash(@three_of_a_kind, toss.filter_out(@three_of_a_kind))
     end
     
   end
   
   class PairsWithSun < TossScorer
     
-    def can_score?
-      if faces.include? :sun
-        @pairs = groups_of_size(2, cubes)
+    def can_score?(toss)
+      if toss.includes_sun?
+        @pairs = toss.groups_of_size(2)
         !@pairs.empty?
       end
     end
     
-    def score
-      other_cubes = filter(cubes, @pairs)
-      pair_cubes = cubes - other_cubes
+    def score(toss)
+      other_cubes = toss.filter_out(@pairs)
+      pair_cubes = toss.cubes - other_cubes
       
       if @pairs.size == 2
         sun_value = @game.ask_which_flash_to_complete(@pairs)
@@ -135,20 +150,21 @@ module CosmicWimpout
         sun_value = @pairs.first
       end
       
-      flash(sun_value, filter(cubes, [:sun, sun_value]))
+      flash(sun_value, toss.filter_out([:sun, sun_value]))
     end
     
   end
   
   class NumbersButNoMagic < TossScorer
     
-    def can_score?
-      @numbers = filter(cubes, [:two, :three, :four, :six, :sun])
+    def can_score?(toss)
+      # TODO add Toss#has_numbers?
+      @numbers = toss.filter_out([:two, :three, :four, :six, :sun])
       !@numbers.empty?
     end
     
-    def score
-      points, symbol_cubes = add_up_numbers(cubes)
+    def score(toss)
+      points, symbol_cubes = *add_up_numbers(toss.cubes)
       Points.new(points: points, remaining: sort(symbol_cubes))
     end
     
@@ -161,10 +177,12 @@ module CosmicWimpout
   
     def score(cubes, game)
     
-      toss_scorers = TOSS_SCORERS.map { |ts| ts.new(cubes, game) }
+      toss_scorers = TOSS_SCORERS.map { |ts| ts.new(game) }
       
-      toss_scorer = toss_scorers.find(&:can_score?)
-      return toss_scorer.score unless toss_scorer.nil?
+      toss = Toss.new(cubes)
+      
+      toss_scorer = toss_scorers.find { |ts| ts.can_score? toss }
+      return toss_scorer.score(toss) unless toss_scorer.nil?
       
       :wimpout
       
