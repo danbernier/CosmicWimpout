@@ -21,8 +21,8 @@ module CosmicWimpout
     end
     
     # TODO i could add five_of_a_kind, four_of_a_kind, etc, and have them call    
-    # n_of_a_kind, and pop the first off - that might help
-    def n_of_a_kind(n, cubes)
+    # groups_of_size, and pop the first off - that might help
+    def groups_of_size(n, cubes)
       counts = cubes.group_by(&:face_up).map { |face, cubes| [face, cubes.size] }
       counts.select { |face, count| count == n }.map(&:first)
     end
@@ -68,7 +68,7 @@ module CosmicWimpout
   class FiveOfAKind < TossScorer
   
     def can_score?
-      @five_of_a_kind = n_of_a_kind(5, cubes).first
+      @five_of_a_kind = groups_of_size(5, cubes).first
       !@five_of_a_kind.nil?
     end
     
@@ -89,7 +89,7 @@ module CosmicWimpout
   class FourOfAKind < TossScorer
   
     def can_score?
-      @four_of_a_kind = n_of_a_kind(4, cubes).first
+      @four_of_a_kind = groups_of_size(4, cubes).first
       !@four_of_a_kind.nil?
     end
     
@@ -106,7 +106,7 @@ module CosmicWimpout
   class ThreeOfAKind < TossScorer
   
     def can_score?
-      @three_of_a_kind = n_of_a_kind(3, cubes).first
+      @three_of_a_kind = groups_of_size(3, cubes).first
       !@three_of_a_kind.nil?
     end
     
@@ -120,7 +120,7 @@ module CosmicWimpout
     
     def can_score?
       if faces.include? :sun
-        @pairs = n_of_a_kind(2, cubes)
+        @pairs = groups_of_size(2, cubes)
         !@pairs.empty?
       end
     end
