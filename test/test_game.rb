@@ -180,6 +180,17 @@ describe CosmicWimpout::Game do
     end
   end
   
+  describe "when a player rolls Instant Winner" do
+    it "ends the game and declares them as the winner" do
+    
+      @game.take_turn(FixedScorer.new(:instant_winner))
+      
+      @game.over?.must_equal true
+      @game.winning_player.must_equal @tortoise
+      
+    end
+  end
+  
 
   # TODO when you get to last licks, make sure you test for a tie game.
   # (Actually, the game is unclear about how to handle a tie. I guess most

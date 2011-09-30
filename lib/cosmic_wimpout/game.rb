@@ -80,8 +80,8 @@ module CosmicWimpout
     end
     
     def instant_winner
-      @we_had_an_instant_winner = true
-      turn_view.instant_winner(current_player)
+      @instant_winner = current_player
+      turn_view.instant_winner(@instant_winner)
     end
 
     # end_turn
@@ -123,7 +123,7 @@ module CosmicWimpout
     end
 
     def over?
-      @we_had_an_instant_winner || @only_one_player_left ||
+      !@instant_winner.nil? || @only_one_player_left ||
       (
       !@last_licks_remaining_turns.nil? && @last_licks_remaining_turns.empty?
       )
@@ -164,7 +164,7 @@ module CosmicWimpout
 
     def winning_player
       if over?
-        @players.sort_by(&:points).last
+        @instant_winner || @players.sort_by(&:points).last
       end
     end
 
