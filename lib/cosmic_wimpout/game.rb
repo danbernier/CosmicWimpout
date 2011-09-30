@@ -9,7 +9,6 @@ module CosmicWimpout
       @players = players
       @turn_view = turn_view
       @cubes = Array.new(4) { WhiteCube.new } + [BlackCube.new]
-      @scorer = Scorer.new
     end
 
     def current_player
@@ -20,7 +19,7 @@ module CosmicWimpout
       end
     end
 
-    def take_turn
+    def take_turn(deps={})
 
       raise 'Game is already over!' if over?
 
@@ -32,10 +31,9 @@ module CosmicWimpout
       until unscored_cubes.empty?
         toss unscored_cubes
 
-      new_scorers = true
-      if new_scorers
-        score = @scorer.score(unscored_cubes, self)
-        p score
+        scorer = deps[:scorer] || Scorer.new
+        score = scorer.score(unscored_cubes, self)
+        #p score
 
         case score
           when :too_many_points
@@ -54,39 +52,17 @@ module CosmicWimpout
             turn_points += score.points
             @flash = score.face # TODO rename that to flash
             unscored_cubes = score.remaining
-            
           when Points
             turn_points += score.points
             unscored_cubes = score.remaining
         end
         
-        unscored_cubes = @cubes if unscored_cubes.empty?
-        
-        
-      else
-        if unscored_cubes.any?(&:tossed_the_sun?)
-          sun_value = player_picks_sun(unscored_cubes, turn_points)
-          black_cube = unscored_cubes.find(&:tossed_the_sun?)
-          black_cube.count_as(sun_value)
-        end
-
-        scored_cubes, unscored_cubes, toss_points = *score_cubes(unscored_cubes)
-
-        turn_points += toss_points
-
-        if scored_cubes.empty? # Cosmic Wimpout! End of turn.
-          end_turn
-          return
-
-        elsif unscored_cubes.empty?
+        if unscored_cubes.empty?  # YMNWTBYM!
           unscored_cubes = @cubes
-
         elsif player_quits(current_player, unscored_cubes, turn_points)
           end_turn(:and_bank => turn_points)
           return
-
         end
-      end
 
         # Now toss the left-over cubes!
       end
@@ -110,64 +86,6 @@ module CosmicWimpout
     
     def player_picks_sun(unscored_cubes, turn_points)
       current_player.pick_value_for_sun(unscored_cubes, turn_points)
-    end
-
-    def score_cubes(unscored_cubes)
-
-      when_three_of_a_kind(unscored_cubes) do |flash_face, flash_cubes|
-
-        flash_score = 10 * value_of_face(flash_face)
-        
-        return add_up_number_cubes(unscored_cubes - flash_cubes).tap do |array|
-          array[2] += flash_score
-          array[0] += flash_cubes
-        end
-      end
-
-      add_up_number_cubes(unscored_cubes)
-    end
-
-    def add_up_number_cubes(unscored_cubes)
-      numbers, symbols = unscored_cubes.partition(&:tossed_a_number?)
-      
-      if numbers.empty?
-        toss_points = 0
-      else
-        toss_points = numbers.map(&:face_up).inject(:+)
-      end
-      
-      [numbers, symbols, toss_points]
-    end
-
-    # TODO Scoring tosses might work better as a strategy object.
-    # A class w/ a detector method, & a scorer method.
-    def when_three_of_a_kind(cubes, &block)
-      grouping = cubes.group_by(&:face_up)
-      flash = grouping.find do |face, cubes|
-        [3,4].include? cubes.size
-      end
-
-      if flash
-        flash_face, flash_cubes = *flash
-        
-        # Store it - player has to clear the flash. (See #toss.)
-        @flash = flash_face
-        
-        flash_cubes = flash_cubes.take(3) # If 4-of-a-kind, the 4th counts normally.
-
-        block.call(flash_face, flash_cubes)
-      end
-    end
-
-    # TODO This kind of thing makes me wonder whether we should kill the symbols.
-    # (Of course this is the most painful part of using the symbols, so it would.)
-    def value_of_face(face)
-      symbols = { :two=>2, :three=>3, :four=>4, :six=>6 }
-      if symbols.key? face
-        symbols[face]
-      else
-        face
-      end
     end
 
     # end_turn

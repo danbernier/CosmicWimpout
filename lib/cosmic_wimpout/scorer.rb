@@ -20,6 +20,8 @@ module CosmicWimpout
       @cubes.map(&:face_up)
     end
     
+    # TODO i could add five_of_a_kind, four_of_a_kind, etc, and have them call    
+    # n_of_a_kind, and pop the first off - that might help
     def n_of_a_kind(n, cubes)
       counts = cubes.group_by(&:face_up).map { |face, cubes| [face, cubes.size] }
       counts.select { |face, count| count == n }.map(&:first)

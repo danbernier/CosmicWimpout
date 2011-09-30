@@ -8,6 +8,7 @@ describe CosmicWimpout::Game do
   before do
     @tortoise = MockPlayer.new "Tortoise"
     @achilles = MockPlayer.new "Achilles"
+    @scorer = 
     @game = CosmicWimpout::Game.new(500, [@tortoise, @achilles], SilentTurnView.new)
 
     # Tortoise never tosses - he'll slowly bank lots of points.
@@ -30,33 +31,6 @@ describe CosmicWimpout::Game do
     end
   end
 
-  describe "when numbers and symbols are tossed" do
-    it "should let the player decide: re-toss the symbol cubes?" do
-      fox_the_cubes(5, 10, [:two, 10], [:two, 10], [:three, :four])
-
-      @tortoise.points = 100
-      @achilles.points = 100
-
-      # Tortoise will get 15 pts first toss, and re-toss.
-      # He'll get 20 more second toss, and stop.
-      @tortoise.tosses_if do |cubes, turn_points|
-        cubes.size > 1
-      end
-
-      @game.take_turn
-
-      @tortoise.points.must_equal 135
-      @tortoise.toss_decisions[0].must_equal [[:two, :two, :three], 15]
-      @tortoise.toss_decisions[1].must_equal [[:four], 35]
-
-      @game.take_turn
-
-      @achilles.points.must_equal 100
-      @achilles.toss_decisions[0].must_equal [[:two, :two, :three], 15]
-      @achilles.toss_decisions[1].must_equal [[:four], 35]
-    end
-  end
-
   describe "when players have no points banked" do
     it "won't let them stop until they have 35 points" do
       fox_the_cubes(5, :two, :four, :four, :six)
@@ -72,85 +46,15 @@ describe CosmicWimpout::Game do
     end
   end
 
-  describe "when only symbols are tossed" do
+  describe "when player wimps out" do
     it "should end the turn immediately, with 0 points" do
-      fox_the_cubes :two, :three, :six, :two, :four
-
-      @game.take_turn
+      
+      @game.take_turn(scorer: FixedScorer.new(:wimpout))
 
       @tortoise.points.must_equal 0
       @tortoise.toss_decisions.size.must_equal 0
     end
   end
-
-  describe "when the Flaming Sun is tossed" do
-    it "should ask the player how to count it" do
-      fox_the_cubes :two, :three, :four, :six, :sun
-      was_asked = false
-      @tortoise.when_asked_about_the_sun { was_asked = true; 10 }
-
-      @game.take_turn
-
-      was_asked.must_equal true
-    end
-  end
-
-  describe "when the player tosses three-of-a-kind" do
-    it "should score them 10x the points of that face" do
-
-      @tortoise.points = 100
-      @achilles.points = 100
-
-      # 3 5s = 5*10
-      fox_the_cubes 5, 5, 5, :two, [:four, 10]
-      @game.take_turn
-      @tortoise.points.must_equal 50 + 10 + 100 # 100 original points
-
-      # 3 6s = 6*10. Yes, it works for symbols, too!
-      fox_the_cubes :six, :six, :six, :two, [:four, 5]
-      @achilles.tosses_if { false } # A rare moment of caution for Achilles.
-      @game.take_turn
-      @achilles.points.must_equal 60 + 5 + 100 # 100 original points
-    end
-  end
-  describe "when the player tosses four-of-a-kind" do
-    it "should score them 10x the points of that face" do
-
-      @tortoise.points = 100
-      @achilles.points = 100
-
-      # 3 2s = 2*10. The extra :two is worthless.
-      fox_the_cubes :two, :two, :two, [:two, 5], :four
-      @game.take_turn
-      
-      # 20=flash, 5=lastcube, 100 original points
-      @tortoise.points.must_equal 20 + 5 + 100
-
-      # 3 5s = 5*10. The extra 5 counts for 5.
-      fox_the_cubes [5,         10], 
-                    [5,         :three], 
-                    [5,         :six], 
-                    [5,         :six], 
-                    [:four, 10, :two]
-      @achilles.tosses_if { false } # A rare moment of caution for Achilles.
-      @game.take_turn
-      @achilles.points.must_equal 50 + 5 + 10 + 10 + 100 # 100 original points
-    end
-  end
-  describe "when the player tosses two-of-a-kind, and a sun" do
-    it "should score them 10x the points of that face, if they allocate the sun right" do
-
-      @tortoise.points = 100
-
-      fox_the_cubes :two, :two, :six, [:three, 5], :sun
-      @tortoise.when_asked_about_the_sun { :two } # Thus giving him 3 :twos.
-      @game.take_turn
-      @tortoise.points.must_equal 20 + 5 + 100 # 100 original points
-
-    end
-  end
-
-
 
   describe "when the player scores on all 5 cubes" do
     it "must make them re-toss all 5 cubes" do
@@ -374,6 +278,16 @@ describe CosmicWimpout::Game do
     end
     
     def starting_last_licks
+    end
+  end
+  
+  class FixedScorer
+    def initialize(score_results)
+      @results = score_results
+    end
+    
+    def score(cubes, game)
+      @results
     end
   end
 end
