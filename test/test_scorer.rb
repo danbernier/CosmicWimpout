@@ -62,14 +62,6 @@ class TestScorer < MiniTest::Unit::TestCase
   def pair(item)
     [item, item]
   end
-  
-  def white(face)
-    White.new(face)
-  end
-  
-  def black(face)
-    Black.new(face)
-  end
 
   def test_five_of_a_kinds
     assert_equal :too_many_points, score(5.oak 10)
@@ -187,7 +179,7 @@ class TestScorer < MiniTest::Unit::TestCase
 end
 
 class Integer
-  def oak(val)
+  def oak(val) # oak = short for Of A Kind. 3.oak(5) -> [5, 5, 5]
     [val] * self
   end
 end
