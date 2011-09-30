@@ -75,6 +75,9 @@ module CosmicWimpout
     
     def too_many_points
       ejected_player = @players.delete(current_player)
+      if @players.size == 1
+        @only_one_player_left = true
+      end
       turn_view.too_many_points(ejected_player)
     end
     
@@ -131,7 +134,7 @@ module CosmicWimpout
     end
 
     def over?
-      @we_had_an_instant_winner ||
+      @we_had_an_instant_winner || @only_one_player_left ||
       (
       !@last_licks_remaining_turns.nil? && @last_licks_remaining_turns.empty?
       )

@@ -210,6 +210,18 @@ describe CosmicWimpout::Game do
       
       game.players.map(&:name).must_equal %w[Achilles Douglas]
     end
+    
+    it "ends if there's only one player left" do
+      players = %w[Tortoise Achilles].map { |n| MockPlayer.new(n) }
+      
+      game = CosmicWimpout::Game.new(500, players, SilentTurnView.new)
+      
+      game.take_turn(scorer: FixedScorer.new(:too_many_points))
+      
+      game.players.map(&:name).must_equal %w[Achilles]
+      
+      game.over?.must_equal true
+    end
   end
   
 
