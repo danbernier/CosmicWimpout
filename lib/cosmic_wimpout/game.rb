@@ -94,11 +94,7 @@ module CosmicWimpout
         turn_view.end_turn(current_player, 0)
       end
 
-      if should_start_last_licks?
-        start_last_licks
-      else
-        move_to_next_player  # Start the next player's turn
-      end
+      move_to_next_player
 
       if over?
         announce_winner
@@ -106,20 +102,20 @@ module CosmicWimpout
     end
 
     def move_to_next_player
-      if in_last_licks?
+    
+      # TODO clean this up
+      if !in_last_licks? && @players.any? { |player| player.points >= @max_points }
+        
+        @last_licks_remaining_turns = @players[1..-1]
+        turn_view.starting_last_licks
+        
+      elsif in_last_licks?
         @last_licks_remaining_turns.shift
+        
       else
         @players.rotate!
       end
-    end
-
-    def should_start_last_licks?
-      !in_last_licks? && @players.any? { |player| player.points >= @max_points }
-    end
-
-    def start_last_licks
-      @last_licks_remaining_turns = @players[1..-1]
-      turn_view.starting_last_licks
+      
     end
 
     def in_last_licks?
