@@ -25,6 +25,22 @@ describe CosmicWimpout::Toss do
     toss.filter_out([:three, 5]).map(&:face_up).must_equal [10, :six]
   end
   
+  it "knows whether it has numbers" do
+    toss = toss(:three, :four, :six, :two)
+    toss.has_numbers?.must_equal false
+    
+    toss = toss(5, :three, :four, :six, :two)
+    toss.has_numbers?.must_equal true
+  end
+  
+  it "knows whether it has the sun" do
+    toss = toss(:three, :four, :six, :two)
+    toss.has_sun?.must_equal false
+    
+    toss = toss(:sun, :three, :four, :six, :two)
+    toss.has_sun?.must_equal true
+  end
+  
   def toss(*faces)
     CosmicWimpout::Toss.new(cubes(*faces))
   end
