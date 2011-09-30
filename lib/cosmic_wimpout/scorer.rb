@@ -23,6 +23,10 @@ module CosmicWimpout
       faces.include? :sun
     end
     
+    def has_numbers?
+      filter_out([:two, :three, :four, :six, :sun]).size > 0
+    end
+    
     def groups_of_size(n)
       counts = cubes.group_by(&:face_up).map { |face, cubes| [face, cubes.size] }
       counts.select { |face, count| count == n }.map(&:first)
@@ -54,8 +58,6 @@ module CosmicWimpout
       cubes.sort_by { |cube| cube.face_up.to_s }
     end
 
-    # TODO This kind of thing makes me wonder whether we should kill the symbols.
-    # (Of course this is the most painful part of using the symbols, so it would.)
     def face_value(face)
       symbols = { :two=>2, :three=>3, :four=>4, :six=>6 }
       if symbols.key? face
@@ -158,9 +160,7 @@ module CosmicWimpout
   class NumbersButNoMagic < TossScorer
     
     def can_score?(toss)
-      # TODO add Toss#has_numbers?
-      @numbers = toss.filter_out([:two, :three, :four, :six, :sun])
-      !@numbers.empty?
+      toss.has_numbers?
     end
     
     def score(toss)
