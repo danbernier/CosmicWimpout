@@ -257,6 +257,9 @@ describe CosmicWimpout::Game do
       
     def too_many_points(player)
     end
+    
+    def instant_winner(player)
+    end
   end
   
   class FixedScorer

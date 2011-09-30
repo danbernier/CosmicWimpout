@@ -82,7 +82,7 @@ module CosmicWimpout
     
     def instant_winner
       @we_had_an_instant_winner = true
-      turn_view.instant_winner
+      turn_view.instant_winner(current_player)
     end
 
     # end_turn
