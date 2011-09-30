@@ -33,7 +33,6 @@ module CosmicWimpout
 
         scorer = deps[:scorer] || Scorer.new
         score = scorer.score(unscored_cubes, self)
-        #p score
 
         case score
           when :too_many_points
@@ -84,10 +83,6 @@ module CosmicWimpout
     def instant_winner
       @we_had_an_instant_winner = true
       turn_view.instant_winner
-    end
-    
-    def player_picks_sun(unscored_cubes, turn_points)
-      current_player.pick_value_for_sun(unscored_cubes, turn_points)
     end
 
     # end_turn
