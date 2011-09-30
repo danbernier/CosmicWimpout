@@ -82,9 +82,8 @@ module CosmicWimpout
     end
     
     def instant_winner
-      # TODO  add to the view
-      puts "Instant Winner! #{current_player} just won the game."
       @we_had_an_instant_winner = true
+      turn_view.instant_winner
     end
     
     def player_picks_sun(unscored_cubes, turn_points)

@@ -30,7 +30,11 @@ module CosmicWimpout
       end
       
       def too_many_points(player)
-        @hl.say "TOO Many points! #{player.name} is out of the game."
+        @hl.say("TOO Many points! #{player.name} is out of the game.")
+      end
+      
+      def instant_winner(player)
+        @h1.say("Instant Winner! #{current_player} just won the game.")
       end
     
     end
